@@ -2,29 +2,35 @@ package br.com.unesp.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-
-@Entity(name = "login")
-public class Login implements Serializable {
+@Entity(name = "host")
+public class Host implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_host")
     private Integer id;
     private String nome;
-    private String email;
-    private String senha;
+    private String macAddres;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_tipo_host")
+    private TipoHost tipo;
 
-    public Login() {
+    public Host() {
     }
 
-    public Login(String nome, String email, String senha) {
+    public Host(String nome, String macAddres, TipoHost tipo) {
         this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+        this.macAddres = macAddres;
+        this.tipo = tipo;
     }
+
 
     public Integer getId() {
         return id;
@@ -42,26 +48,26 @@ public class Login implements Serializable {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMacAddres() {
+        return macAddres;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMacAddres(String macAddres) {
+        this.macAddres = macAddres;
     }
 
-    public String getSenha() {
-        return senha;
+    public TipoHost getTipo() {
+        return tipo;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setTipo(TipoHost tipo) {
+        this.tipo = tipo;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -76,7 +82,7 @@ public class Login implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Login other = (Login) obj;
+        final Host other = (Host) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -85,8 +91,7 @@ public class Login implements Serializable {
 
     @Override
     public String toString() {
-        return "Login{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + '}';
+        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + '}';
     }
     
 }
-    

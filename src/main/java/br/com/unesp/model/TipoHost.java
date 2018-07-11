@@ -2,30 +2,27 @@ package br.com.unesp.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-@Entity(name = "login")
-public class Login implements Serializable {
+@Entity(name = "tipo_host")
+public class TipoHost implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_tipo_host")
     private Integer id;
-    private String nome;
-    private String email;
-    private String senha;
+    private String tipo;
 
-    public Login() {
+    public TipoHost() {
     }
 
-    public Login(String nome, String email, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+    public TipoHost(String tipo) {
+        this.tipo = tipo;
     }
-
+    
     public Integer getId() {
         return id;
     }
@@ -34,34 +31,18 @@ public class Login implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 43 * hash + Objects.hashCode(this.id);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -76,7 +57,7 @@ public class Login implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Login other = (Login) obj;
+        final TipoHost other = (TipoHost) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -85,8 +66,7 @@ public class Login implements Serializable {
 
     @Override
     public String toString() {
-        return "Login{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + '}';
+        return "TipoHost{" + "id=" + id + ", tipo=" + tipo + '}';
     }
     
 }
-    
