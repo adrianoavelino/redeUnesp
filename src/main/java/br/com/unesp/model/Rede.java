@@ -1,20 +1,31 @@
 package br.com.unesp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 
 @Entity(name = "rede")
 public class Rede implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_rede")
     private Integer id;
     private String endereco;
-    
+    @ElementCollection
+    @CollectionTable(name = "ip", joinColumns = @JoinColumn(name = "id_rede"))
+    @Column(name = "enderecoIp", unique = true)
+    private List<String> listaIps;
+
     public Rede() {
     }
 
@@ -36,6 +47,14 @@ public class Rede implements Serializable {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public List<String> getListaIps() {
+        return listaIps;
+    }
+
+    public void setListaIps(List<String> listaIps) {
+        this.listaIps = listaIps;
     }
 
     @Override
@@ -65,7 +84,7 @@ public class Rede implements Serializable {
 
     @Override
     public String toString() {
-        return "Rede{" + "id=" + id + ", endereco=" + endereco + '}';
+        return "Rede{" + "id=" + id + ", endereco=" + endereco + ", listaIps=" + listaIps + '}';
     }
-    
+
 }
