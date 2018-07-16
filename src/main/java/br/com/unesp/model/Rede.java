@@ -1,9 +1,10 @@
 package br.com.unesp.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -21,10 +22,10 @@ public class Rede implements Serializable {
     @Column(name = "id_rede")
     private Integer id;
     private String endereco;
+    @Column(name = "enderecoIp", nullable = false)
     @ElementCollection
     @CollectionTable(name = "ip", joinColumns = @JoinColumn(name = "id_rede"))
-    @Column(name = "enderecoIp", unique = true)
-    private List<String> listaIps;
+    private Set<String> listaIps = new HashSet<>();
 
     public Rede() {
     }
@@ -49,11 +50,11 @@ public class Rede implements Serializable {
         this.endereco = endereco;
     }
 
-    public List<String> getListaIps() {
+    public Set<String> getListaIps() {
         return listaIps;
     }
 
-    public void setListaIps(List<String> listaIps) {
+    public void setListaIps(Set<String> listaIps) {
         this.listaIps = listaIps;
     }
 
