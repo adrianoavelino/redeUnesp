@@ -2,22 +2,28 @@ package br.com.unesp.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity(name = "vlan")
 public class Vlan implements Serializable {
+
     @Id
+    @Column(name = "id_vlan")
     private Integer id;
     private String descricao;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_grupoRede")
     private GrupoRede grupoRede;
 
+    @OneToMany
+    @JoinColumn(name = "id_vlan", referencedColumnName = "id_vlan")
+    private Set<Subrede> listaSubrede;
 
     public Vlan() {
     }
@@ -28,8 +34,6 @@ public class Vlan implements Serializable {
         this.grupoRede = grupoRede;
     }
 
-
-
     public GrupoRede getGrupoRede() {
         return grupoRede;
     }
@@ -37,7 +41,7 @@ public class Vlan implements Serializable {
     public void setGrupoRede(GrupoRede grupoRede) {
         this.grupoRede = grupoRede;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -54,6 +58,14 @@ public class Vlan implements Serializable {
         this.descricao = descricao;
     }
 
+    public Set<Subrede> getListaSubrede() {
+        return listaSubrede;
+    }
+
+    public void setListaSubrede(Set<Subrede> listaSubrede) {
+        this.listaSubrede = listaSubrede;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -81,7 +93,7 @@ public class Vlan implements Serializable {
 
     @Override
     public String toString() {
-        return "Vlan{" + "id=" + id + ", descricao=" + descricao + '}';
+        return "Vlan{" + "id=" + id + ", descricao=" + descricao + ", grupoRede=" + grupoRede + '}';
     }
-    
+
 }

@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity(name = "rede")
 public class Rede implements Serializable {
@@ -26,7 +28,7 @@ public class Rede implements Serializable {
     @ElementCollection
     @CollectionTable(name = "ip", joinColumns = @JoinColumn(name = "id_rede"))
     private Set<String> listaIps = new HashSet<>();
-
+    
     public Rede() {
     }
 
