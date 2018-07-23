@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <ui:composition template="index.xhtml" 
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -7,7 +6,46 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-        Grupo de Redes
+        <h:form id="grupoRede-cadastro">
+            <h:inputHidden id="id_grupoRede" value="#{grupoRedeController.grupoRede.id}" />
+            <h:panelGrid columns="4">
+                <p:outputLabel value="Nome:" for="nome" />
+                <p:inputText id="nome" value="#{grupoRedeController.grupoRede.nome}" required="true" requiredMessage="Preencha o campo nome" > 
+                </p:inputText>
+                <p:commandButton value="Salvar" action="#{grupoRedeController.salvar}" styleClass="formGrupoRede_button" update="grupoRede-cadastro :grupoRede-tabela" />
+                <p:messages />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="grupoRede-tabela">
+            <p:dataTable 
+                         value="#{grupoRedeController.dao.listar()}" var="grupo" style="width: 500px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{grupo.id}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{grupo.nome}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" actionListener="#{grupoRedeController.deletar}" update=":grupoRede-cadastro :grupoRede-tabela" immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Grupo de rede?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":grupoRede-cadastro" />
+                        <f:attribute name="grupoRedeSelecionado" value="#{grupo}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" actionListener="#{grupoRedeController.editar}" update=":grupoRede-cadastro :grupoRede-tabela" immediate="true" >
+                        <p:resetInput target=":grupoRede-cadastro" />
+                        <f:attribute name="grupoRedeSelecionado" value="#{grupo}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>            
+            </h:form>
     </ui:define>
 </ui:composition>
 

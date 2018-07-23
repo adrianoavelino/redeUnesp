@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "grupoRede")
 public class GrupoRede implements Serializable {
@@ -14,6 +15,8 @@ public class GrupoRede implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_grupoRede")
     private Integer id;
+    @Column(name = "nome", length = 50, unique = true)
+    @NotBlank(message = "Campo nome em branco")
     private String nome;
 
     public GrupoRede() {
@@ -38,6 +41,12 @@ public class GrupoRede implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    public boolean isDiferente(GrupoRede grupo) {
+        return this.id != grupo.getId();
+    }
+    
+    
 
     @Override
     public int hashCode() {

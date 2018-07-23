@@ -7,10 +7,10 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="titulo">Rede Unesp</ui:define>
     <ui:define name="menu">
-        <h:form>
-            <p:menubar>
+        <h:form id="menu">
+            <p:menubar styleClass="menu">
                 <p:menuitem value="Home" action="index?faces-redirect=true"/>
-                <p:menuitem value="Grupo de Redes" action="grupoDeRedes?faces-redirect=true" ajax="false" />
+                <p:menuitem value="Grupo de Redes" action="grupoDeRedes?faces-redirect=true"/>
                 <p:menuitem value="Vlan" action="vlan?faces-redirect=true"/>
                 <p:menuitem value="Rede" action="rede?faces-redirect=true"/>
                 <p:menuitem value="Subrede" action="subrede?faces-redirect=true"/>

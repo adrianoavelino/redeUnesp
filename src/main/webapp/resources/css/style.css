@@ -3,7 +3,7 @@ body {
     padding: 0;
 }
 
-table {
+table:nth-child(1) {
     width: 100%;
 }
 
@@ -11,4 +11,8 @@ table {
     font-size: 95% ;
 }.ui-widget, .ui-widget .ui-widget {    
     font-size: 95% ;
+}
+
+.formGrupoRede_button {
+    margin-left: 5px;
 }
