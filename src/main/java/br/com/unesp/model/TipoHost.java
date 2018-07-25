@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "tipo_host")
 public class TipoHost implements Serializable {
@@ -14,12 +15,19 @@ public class TipoHost implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_host")
     private Integer id;
+    @NotBlank(message = "Campo Descrição do Tipo em branco")
+    @Column(unique = true)
     private String tipo;
 
     public TipoHost() {
     }
 
     public TipoHost(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public TipoHost(Integer id, String tipo) {
+        this.id = id;
         this.tipo = tipo;
     }
     
@@ -38,6 +46,10 @@ public class TipoHost implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+    
+    public boolean isDiferente(TipoHost tipo) {
+        return this.id != tipo.getId();
+    }    
 
     @Override
     public int hashCode() {
