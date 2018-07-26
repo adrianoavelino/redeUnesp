@@ -8,3 +8,10 @@
 
 # Mysql
 drop database redeUnesp;create database redeUnesp;use redeUnesp;
+
+-Host
+    - verificar nome duplicado
+    - verificar mac-address duplicado
+    - colocar mascara para mac-address
+    - validar mac-address
+

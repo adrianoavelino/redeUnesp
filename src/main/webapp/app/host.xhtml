@@ -7,7 +7,70 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-        host
+        <h:form id="host-cadastro">
+            <p:messages />
+            <h:inputHidden value="#{hostController.host.id}" />
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nome:" for="nome" />
+                <p:inputText id="nome" value="#{hostController.host.nome}" />
+                <p:outputLabel value="Mac-addres:" for="macAddress" />
+                <p:inputText id="macAddress" value="#{hostController.host.macAddres}" />
+                <p:outputLabel value="Tipo do host:" />
+                <p:selectOneMenu id="tipoHost"
+                                 style="width: 200px;"
+                                 converter="tipoHostConverter"
+                                 value="#{hostController.host.tipo}">
+                    <f:selectItem itemLabel="Selecione um tipo" />
+                    <f:selectItems value="#{tipoHostController.dao.listar()}"
+                                   var="tipo"
+                                   itemLabel="#{tipo.tipo}"
+                                   itemValue="#{tipo}" />
+                </p:selectOneMenu>
+                <p:outputLabel />
+                <p:commandButton value="Salvar" action="#{hostController.salvar()}" update="host-cadastro :host-tabela" />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="host-tabela">
+            <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 900px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{host.id}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{host.nome}" />
+                </p:column>
+                <p:column headerText="Mac-addres">
+                    <h:outputText value="#{host.macAddres}" />
+                </p:column>
+                <p:column headerText="Tipo">
+                    <h:outputText value="#{host.tipo.tipo}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" 
+                                     actionListener="#{hostController.deletar}"
+                                     update=":host-tabela"
+                                     immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Host?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":host-cadastro" />
+                        <f:attribute name="hostSelecionado" value="#{host}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" 
+                                     actionListener="#{hostController.editar}" 
+                                     update=":host-cadastro" 
+                                     immediate="true">
+                        <p:resetInput target=":host-cadastro" />
+                        <f:attribute name="hostSelecionado" value="#{host}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>  
+        </h:form>
+        
     </ui:define>
 </ui:composition>
 

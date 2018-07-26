@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "host")
 public class Host implements Serializable {
@@ -16,10 +18,13 @@ public class Host implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_host")
     private Integer id;
+    @NotBlank(message = "O campo nome está vazio")
     private String nome;
+    @NotBlank(message = "O campo Mac-address está vazio")
     private String macAddres;
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     @JoinColumn(name = "id_tipo_host")
+    @NotNull(message = "Selecione um tipo de host")
     private TipoHost tipo;
 
     public Host() {
@@ -91,7 +96,7 @@ public class Host implements Serializable {
 
     @Override
     public String toString() {
-        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + '}';
+        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + ", tipo=" + tipo + '}';
     }
-    
+
 }
