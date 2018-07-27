@@ -15,3 +15,7 @@ drop database redeUnesp;create database redeUnesp;use redeUnesp;
     - colocar mascara para mac-address
     - validar mac-address
 
+- Rede
+    - verificar endereco duplicado
+    - adicionar mascara
+    - verificar ip válido     

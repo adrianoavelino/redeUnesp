@@ -7,7 +7,53 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-rede
+        <h:form id="rede-cadastro">
+            <h:inputHidden value="#{redeController.rede.id}" />
+            <h:panelGrid columns="5">
+                <p:outputLabel value="Endereço:" for="endereco" />
+                <p:inputText id="endereco" value="#{redeController.rede.endereco}" />
+                <p:commandButton value="Salvar" 
+                                 action="#{redeController.salvar}" 
+                                 update="rede-cadastro :rede-tabela" />
+                <p:messages />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="rede-tabela">
+            <p:dataTable value="#{redeController.dao.listar()}" 
+                         var="rede" 
+                         style="width: 600px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{rede.id}" />
+                </p:column>
+                <p:column headerText="Endereço">
+                    <h:outputText value="#{rede.endereco}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" 
+                                     actionListener="#{redeController.deletar}"
+                                     update=":rede-tabela"
+                                     immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir a Rede?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":rede-cadastro" />
+                        <f:attribute name="redeSelecionada" value="#{rede}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" 
+                                     actionListener="#{redeController.editar}" 
+                                     update=":rede-cadastro" 
+                                     immediate="true">
+                        <p:resetInput target=":rede-cadastro" />
+                        <f:attribute name="redeSelecionada" value="#{rede}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>  
+        </h:form>
     </ui:define>
 </ui:composition>
 
