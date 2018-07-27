@@ -5,20 +5,29 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "vlan")
 public class Vlan implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vlan")
     private Integer id;
+    @NotNull(message = "O campo número está vazio")
+    private Integer numero;
+    @NotBlank(message = "O campo Descrição está em branco")
     private String descricao;
     @OneToOne
     @JoinColumn(name = "id_grupoRede")
+    @NotNull(message = "Selecione um Grupo de Rede")
     private GrupoRede grupoRede;
 
     @OneToMany
@@ -49,6 +58,16 @@ public class Vlan implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+    
+    
 
     public String getDescricao() {
         return descricao;
@@ -93,7 +112,7 @@ public class Vlan implements Serializable {
 
     @Override
     public String toString() {
-        return "Vlan{" + "id=" + id + ", descricao=" + descricao + ", grupoRede=" + grupoRede + '}';
+        return "Vlan{" + "id=" + id + ", numero=" + numero + ", descricao=" + descricao + ", grupoRede=" + grupoRede + ", listaSubrede=" + listaSubrede + '}';
     }
 
 }

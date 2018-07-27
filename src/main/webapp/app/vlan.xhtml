@@ -7,7 +7,73 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-        vlan
+        <h:form id="vlan-cadastro">
+            <p:messages />
+            <h:inputHidden value="#{vlanController.vlan.id}" />
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Número da Vlan:" for="numeroVlan" />
+                <p:inputText id="numeroVlan" value="#{vlanController.vlan.numero}">
+                    <f:convertNumber type="number" />
+                </p:inputText>
+                <p:outputLabel value="Descrição:" for="descricao" />
+                <p:inputText id="descricao" value="#{vlanController.vlan.descricao}" />
+                <p:outputLabel value="Grupo de Rede:" />
+                <h:selectOneMenu id="grupoRede"
+                                 converter="grupoRedeConverter"
+                                 value="#{vlanController.vlan.grupoRede}">
+                    <f:selectItem itemLabel="Selecione um Grupo de Rede" />
+                    <f:selectItems value="#{grupoRedeController.dao.listar()}"
+                                   var="grupo"
+                                   itemLabel="#{grupo.nome}"
+                                   itemValue="#{grupo}" />
+                </h:selectOneMenu>
+                <p:outputLabel />
+                <p:commandButton value="Salvar" 
+                                 action="#{vlanController.salvar()}" 
+                                 update="vlan-cadastro :vlan-tabela" />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="vlan-tabela">
+            <p:dataTable value="#{vlanController.dao.listar()}" var="vlan" style="width: 900px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{vlan.id}" />
+                </p:column>
+                <p:column headerText="Número da Vlan">
+                    <h:outputText value="#{vlan.numero}" />
+                </p:column>
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{vlan.descricao}" />
+                </p:column>
+                <p:column headerText="Grupo de Rede">
+                    <h:outputText value="#{vlan.grupoRede.nome}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" 
+                                     actionListener="#{vlanController.deletar}"
+                                     update=":vlan-tabela"
+                                     immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Host?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":vlan-cadastro" />
+                        <f:attribute name="vlanSelecionada" value="#{vlan}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" 
+                                     actionListener="#{vlanController.editar}" 
+                                     update=":vlan-cadastro" 
+                                     immediate="true">
+                        <p:resetInput target=":vlan-cadastro" />
+                        <f:attribute name="vlanSelecionada" value="#{vlan}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>  
+        </h:form>
+
     </ui:define>
 </ui:composition>
 

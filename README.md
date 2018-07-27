@@ -18,4 +18,10 @@ drop database redeUnesp;create database redeUnesp;use redeUnesp;
 - Rede
     - verificar endereco duplicado
     - adicionar mascara
-    - verificar ip válido     
+    - verificar ip válido
+
+- Vlan
+    - validar campo número com converter - traduzir mensagem ou trocar por String
+    - verificar numero duplicado
+    - verificar a possibilidade somente numero
+    - adicionar subrede no mesmo form
