@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<ui:composition template="index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="dados">
+        <h:form id="usuario-cadastro">
+            <p:messages />
+            <h:inputHidden id="id" value="#{usuarioController.usuario.id}" />
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nome:" for="nome" />
+                <p:inputText id="nome" value="#{usuarioController.usuario.nome}" required="true" requiredMessage="Preencha o campo nome" /> 
+                <p:outputLabel value="Matrícula:" for="matricula" />
+                <p:inputText id="matricula" value="#{usuarioController.usuario.matricula}" required="true" requiredMessage="Preencha o campo Matrícula" /> 
+                <h:outputLabel />
+                <p:commandButton value="Salvar" action="#{usuarioController.salvar}"  update="usuario-cadastro :usuario-tabela" />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="usuario-tabela">
+            <p:dataTable 
+                         value="#{usuarioController.dao.listar()}" var="usuario" style="width: 500px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{usuario.id}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{usuario.nome}" />
+                </p:column>
+                <p:column headerText="Matrícula">
+                    <h:outputText value="#{usuario.matricula}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" actionListener="#{usuarioController.deletar}" update=":usuario-cadastro :usuario-tabela" immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Usuário?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":usuario-cadastro" />
+                        <f:attribute name="usuarioSelecionado" value="#{usuario}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" actionListener="#{usuarioController.editar}" update=":usuario-cadastro :usuario-tabela" immediate="true" >
+                        <p:resetInput target=":usuario-cadastro" />
+                        <f:attribute name="usuarioSelecionado" value="#{usuario}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>            
+            </h:form>
+    </ui:define>
+</ui:composition>
+
