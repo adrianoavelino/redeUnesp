@@ -2,7 +2,6 @@ package br.com.unesp.controller;
 
 import br.com.unesp.dao.VlanDao;
 import br.com.unesp.jsf.message.FacesMessages;
-import br.com.unesp.model.GrupoRede;
 import br.com.unesp.model.Vlan;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -54,11 +53,11 @@ public class VlanController {
             message.info("Cadastro realizado com sucesso!");
         } else {
             try {
-                dao.atualizar(vlan);
-                vlan = new Vlan();
+                dao.atualizar(this.vlan);
+                this.vlan = new Vlan();
                 message.info("Alterado com sucesso!");
             } catch (Exception ex) {
-                message.error("Erro ao alterar vlan");
+                message.error("Erro ao alterar Vlan");
             }
         }
     }
@@ -77,4 +76,7 @@ public class VlanController {
         vlan = (Vlan) evento.getComponent().getAttributes().get("vlanSelecionada");
     }
 
+    public String pegarDescricaoDaVlanPorId(Integer idDaVlan) {
+        return dao.buscarPorId(idDaVlan).getDescricao();
+    }
 }

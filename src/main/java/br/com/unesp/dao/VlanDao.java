@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 @Stateless
 public class VlanDao {
+
     @PersistenceContext(unitName = "redeUnespPU")
     private EntityManager em;
 
@@ -19,7 +20,7 @@ public class VlanDao {
     public void setEm(EntityManager em) {
         this.em = em;
     }
-    
+
     public void salvar(Vlan vlan) {
         this.em.persist(vlan);
     }
@@ -35,11 +36,14 @@ public class VlanDao {
         vlanModificada.setDescricao(vlan.getDescricao());
         vlanModificada.setNumero(vlan.getNumero());
         vlanModificada.setGrupoRede(vlan.getGrupoRede());
-        em.merge(vlan);
+        em.merge(vlanModificada);
     }
 
     public void deletar(Vlan vlan) throws Exception {
         this.em.remove(this.em.merge(vlan));
     }
-    
+
+    public Vlan buscarPorId(Integer id_rede) {
+        return this.em.find(Vlan.class, id_rede);
+    }
 }

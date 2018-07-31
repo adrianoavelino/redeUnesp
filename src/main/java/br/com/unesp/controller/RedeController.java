@@ -4,7 +4,7 @@ import br.com.unesp.dao.RedeDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Ip;
 import br.com.unesp.model.Rede;
-import java.util.Set;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ public class RedeController {
     private Rede rede = new Rede();
     @Inject
     private FacesMessages message;
-    private Set<String> listaIp;
+    private List<String> listaIp;
 
     public RedeDao getDao() {
         return dao;
@@ -40,17 +40,17 @@ public class RedeController {
     public RedeController() {
     }
 
-    public Set<String> getListaIp() {
+    public List<String> getListaIp() {
         return listaIp;
     }
 
-    public void setListaIp(Set<String> listaIp) {
+    public void setListaIp(List<String> listaIp) {
         this.listaIp = listaIp;
     }
 
     public void salvar() {
         if (rede.getId() == null) {
-            Set<String> list = Ip.criarListaEnderecoIp(rede);
+            List<String> list = Ip.criarListaEnderecoIp(rede);
             rede.setListaIps(list);
             dao.salvar(this.rede);
             System.out.println("Salva Rede" + rede);
@@ -58,7 +58,7 @@ public class RedeController {
             message.info("Cadastrado com sucesso!");
         } else {
             try {
-                Set<String> list = Ip.criarListaEnderecoIp(rede);
+                List<String> list = Ip.criarListaEnderecoIp(rede);
                 rede.setListaIps(list);
                 dao.atualizar(rede);
                 rede = new Rede();

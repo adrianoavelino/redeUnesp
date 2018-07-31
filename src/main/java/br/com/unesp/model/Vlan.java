@@ -3,8 +3,10 @@ package br.com.unesp.model;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,8 @@ public class Vlan implements Serializable {
     @NotNull(message = "Selecione um Grupo de Rede")
     private GrupoRede grupoRede;
 
-    @OneToMany
+    
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_vlan", referencedColumnName = "id_vlan")
     private Set<Subrede> listaSubrede;
 
@@ -112,7 +115,7 @@ public class Vlan implements Serializable {
 
     @Override
     public String toString() {
-        return "Vlan{" + "id=" + id + ", numero=" + numero + ", descricao=" + descricao + ", grupoRede=" + grupoRede + ", listaSubrede=" + listaSubrede + '}';
+        return "Vlan{" + "id=" + id + ", numero=" + numero + ", descricao=" + descricao + " '}'";
     }
 
 }

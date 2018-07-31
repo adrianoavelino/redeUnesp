@@ -25,3 +25,16 @@ drop database redeUnesp;create database redeUnesp;use redeUnesp;
     - verificar numero duplicado
     - verificar a possibilidade somente numero
     - adicionar subrede no mesmo form
+
+- Subrede
+    - ordenar opções do h:selectOneMenu de máscara de rede
+    - organizar tabela
+    - otimizar eager das tabelas
+    - remover métodos com parâmetros (getgateway ...)
+
+- 
+
+- Geral
+    - remover css inline (style)
+    - corrigir Doctype para html5
+    - alterar selectOneMenu para a versão primefaces

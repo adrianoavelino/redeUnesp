@@ -7,49 +7,35 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-        <h:form id="subrede-cadastro">
+        <h:form id="deletar-subrede-cadastro">
+                Selecione uma Rede para deletar as Subredes
             <p:messages />
             <h:inputHidden value="#{subredeController.subrede.id}" />
-            <h:panelGrid columns="2">
-
+            <h:panelGrid columns="4">
                 <p:outputLabel value="Rede:" />
                 <h:selectOneMenu id="rede"
-                                 value="#{subredeController.subrede.rede}">
-                    <f:selectItem itemLabel="Selecione uma rede" itemValue="" />
+                                 value="#{deleteSubredeController.rede}">
+                    <f:selectItem itemLabel="Selecione uma Rede" 
+                                  itemValue=""/>
                     <f:selectItems value="#{redeController.dao.listar()}"
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
                                    itemValue="#{rede.id}" />
                 </h:selectOneMenu>    
 
-                <p:outputLabel value="Vlan:" />
-                <h:selectOneMenu id="vlan"
-                                 value="#{subredeController.subrede.vlan}">
-                    <f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />
-                    <f:selectItems value="#{vlanController.dao.listar()}"
-                                   var="vlan"
-                                   itemLabel="#{vlan.numero} - #{vlan.descricao}"
-                                   itemValue="#{vlan.id}" />
-                </h:selectOneMenu>    
-
-                <p:outputLabel value="Máscara de rede:" />
-                <h:selectOneMenu id="qtdHosts"
-                                 value="#{subredeController.subrede.netmask}">
-                    <f:selectItem itemLabel="Selecione uma Máscara de Rede" itemValue="" />
-                    <f:selectItems value="#{subredeController.marcarasDeRede}"
-                                   var="qtd"
-                                   itemLabel="#{mascara}"
-                                   itemValue="#{mascara}" />
-                </h:selectOneMenu>  
                 <h:outputLabel />
-                <p:commandButton value="Salvar" 
-                                 action="#{subredeController.salvar()}" 
-                                 update="subrede-cadastro :subrede-tabela">
+                <p:commandButton value="Deletar subredes desta Rede" 
+                                 action="#{deleteSubredeController.resetar()}" 
+                                 update="deletar-subrede-cadastro :subrede-tabela">
                 </p:commandButton>
             </h:panelGrid>
         </h:form>
+        
         <h:form id="subrede-tabela">
             <p:dataTable value="#{subredeController.dao.listar()}" var="subrede">
+                <p:column headerText="id">
+                    <h:outputText value="#{subrede.id}" />
+                </p:column>
                 <p:column headerText="Vlan">
                     <h:outputText value="#{vlanController.pegarDescricaoDaVlanPorId(subrede.vlan)}" />
                 </p:column>
@@ -69,7 +55,14 @@
                     <h:outputText value="#{subredeController.getEnderecoGateway(subrede.listaEnderecoIpSubrede)}" />
                 </p:column>
             </p:dataTable>
-        </h:form>    
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>  
+        </h:form>        
+
     </ui:define>
 </ui:composition>
 

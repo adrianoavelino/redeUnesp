@@ -2,8 +2,9 @@ package br.com.unesp.model;
 
 import br.com.unesp.comparator.IpComparator;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CollectionTable;
@@ -27,9 +28,9 @@ public class Rede implements Serializable {
     @NotBlank(message = "O campo endereço está vazio")
     private String endereco;
     @Column(name = "enderecoIp", nullable = false)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ip", joinColumns = @JoinColumn(name = "id_rede"))
-    private Set<String> listaIps = new HashSet<>();
+    private List<String> listaIps = new ArrayList<>();
     
     
     public Rede() {
@@ -55,18 +56,15 @@ public class Rede implements Serializable {
         this.endereco = endereco;
     }
 
-    public Set<String> getListaIps() {
-        Set<String> listaDeEnderecoIpDaSubrede = new TreeSet<String>(new IpComparator());
-        listaDeEnderecoIpDaSubrede.addAll(listaIps);
-        return listaDeEnderecoIpDaSubrede;
-
-//        return listaIps;
+    public List<String> getListaIps() {
+        return listaIps;
     }
 
-    public void setListaIps(Set<String> listaIps) {
-//        Set<String> listaDeEnderecoIpDaSubrede = new TreeSet<String>(new IpComparator());
-//        listaDeEnderecoIpDaSubrede.addAll(listaIps);        
-        this.listaIps = listaIps;
+    public void setListaIps(List<String> listaIps) {
+        Set<String> listaDeIpsUnicos = new TreeSet<String>(new IpComparator());
+        listaDeIpsUnicos.addAll(listaIps);
+        List<String> list = new ArrayList<>(listaDeIpsUnicos);
+        this.listaIps = list;
     }
 
     @Override

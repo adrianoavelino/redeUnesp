@@ -12,9 +12,7 @@
             <h:inputHidden value="#{hostController.host.id}" />
             <h:panelGrid columns="2">
                 <p:outputLabel value="Nome:" for="nome" />
-                <p:inputText id="nome" value="#{hostController.host.nome}">
-                    <f:convertNumber type="number" />
-                </p:inputText>
+                <p:inputText id="nome" value="#{hostController.host.nome}"/>
                 <p:outputLabel value="Mac-addres:" for="macAddress" />
                 <p:inputText id="macAddress" value="#{hostController.host.macAddres}" />
                 <p:outputLabel value="Tipo do host:" />

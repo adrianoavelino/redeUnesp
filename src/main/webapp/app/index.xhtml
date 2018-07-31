@@ -13,7 +13,11 @@
                 <p:menuitem value="Grupo de Redes" action="grupoDeRedes?faces-redirect=true"/>
                 <p:menuitem value="Vlan" action="vlan?faces-redirect=true"/>
                 <p:menuitem value="Rede" action="rede?faces-redirect=true"/>
-                <p:menuitem value="Subrede" action="subrede?faces-redirect=true"/>
+                <p:submenu label="Subrede">
+                    <p:menuitem value="Cadastrar" action="subrede?faces-redirect=true"/>
+                    <p:menuitem value="Deletar" action="deletar-subrede?faces-redirect=true"/>
+
+                </p:submenu>
                 <p:menuitem value="Login" action="login?faces-redirect=true"/>
                 <p:menuitem value="Host" action="host?faces-redirect=true"/>
                 <p:menuitem value="Tipo Host" action="tipo-host?faces-redirect=true"/>
