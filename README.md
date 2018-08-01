@@ -32,7 +32,8 @@ drop database redeUnesp;create database redeUnesp;use redeUnesp;
     - otimizar eager das tabelas
     - remover métodos com parâmetros (getgateway ...)
 
-- 
+- Usuario
+    - colocar mascara na matrícula
 
 - Geral
     - remover css inline (style)
