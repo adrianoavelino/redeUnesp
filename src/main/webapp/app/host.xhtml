@@ -26,6 +26,17 @@
                                    itemLabel="#{tipo.tipo}"
                                    itemValue="#{tipo}" />
                 </p:selectOneMenu>
+                <p:outputLabel value="Usuário:" />
+                <h:selectOneMenu id="usuario"
+                                 style="width: 200px;"
+                                 converter="usuarioConverter"
+                                 value="#{hostController.host.usuario}">
+                    <f:selectItem itemLabel="Selecione um Usuário" />
+                    <f:selectItems value="#{usuarioController.dao.listar()}"
+                                   var="usuario"
+                                   itemLabel="#{usuario.nome}"
+                                   itemValue="#{usuario}" />
+                </h:selectOneMenu>
                 <p:outputLabel />
                 <p:commandButton value="Salvar" action="#{hostController.salvar()}" update="host-cadastro :host-tabela" />
             </h:panelGrid>
@@ -43,6 +54,9 @@
                 </p:column>
                 <p:column headerText="Tipo">
                     <h:outputText value="#{host.tipo.tipo}" />
+                </p:column>
+                <p:column headerText="Usuario">
+                    <h:outputText value="#{host.usuario.nome}" />
                 </p:column>
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 

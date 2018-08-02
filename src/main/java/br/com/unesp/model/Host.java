@@ -8,12 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "host")
 public class Host implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_host")
@@ -26,6 +28,10 @@ public class Host implements Serializable {
     @JoinColumn(name = "id_tipo_host")
     @NotNull(message = "Selecione um tipo de host")
     private TipoHost tipo;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     public Host() {
     }
@@ -35,7 +41,6 @@ public class Host implements Serializable {
         this.macAddres = macAddres;
         this.tipo = tipo;
     }
-
 
     public Integer getId() {
         return id;
@@ -68,7 +73,15 @@ public class Host implements Serializable {
     public void setTipo(TipoHost tipo) {
         this.tipo = tipo;
     }
-    
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

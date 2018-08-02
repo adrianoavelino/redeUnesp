@@ -1,11 +1,15 @@
 package br.com.unesp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import org.hibernate.validator.constraints.NotBlank;
 
 
@@ -21,6 +25,9 @@ public class Usuario implements Serializable {
     @NotBlank(message = "Preencha o campo Matrícula")
     private String matricula;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Host> listaDeHosts = new ArrayList<>();
+    
     public Usuario() {
     }
 
@@ -47,6 +54,16 @@ public class Usuario implements Serializable {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+
+    public List<Host> getListaDeHosts() {
+        return listaDeHosts;
+    }
+
+    public void setListaDeHosts(List<Host> listaDeHosts) {
+        this.listaDeHosts = listaDeHosts;
+    }
+    
+    
 
     @Override
     public int hashCode() {
