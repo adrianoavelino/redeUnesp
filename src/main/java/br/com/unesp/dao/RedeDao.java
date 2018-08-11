@@ -2,7 +2,6 @@ package br.com.unesp.dao;
 
 import br.com.unesp.model.Rede;
 import java.util.List;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,7 +21,7 @@ public class RedeDao {
         this.em = em;
     }
 
-    public void salvar(Rede rede) {
+    public void salvar(Rede rede) throws Exception {
         em.persist(rede);
     }
 
@@ -41,9 +40,4 @@ public class RedeDao {
     public void deletar(Rede rede) throws Exception {
         this.em.remove(this.em.merge(rede));
     }
-
-    public List<String> buscar(Integer id) {
-        return this.em.find(Rede.class, id).getListaIps();
-    }
-
 }

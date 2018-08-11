@@ -1,5 +1,8 @@
 package br.com.unesp.dao;
 
+import br.com.unesp.model.Ip;
+import br.com.unesp.model.Rede;
+import br.com.unesp.model.Subrede;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -13,6 +16,27 @@ public class IpDao {
     @PersistenceContext(unitName = "redeUnespPU")
     private EntityManager em;
 
+    public List<Rede> listar() throws Exception {
+        Query query = this.em.createQuery("from ip i");
+        List<Rede> redes = query.getResultList();
+        return redes;
+    }
+
+    public void salvar(Ip ip) throws Exception {
+        em.persist(ip);
+    }
+
+    public void atualizar(Ip ip) throws Exception {
+        Ip ipModificado = em.find(Ip.class, ip.getId());
+        ipModificado.setEnderecoIp(ip.getEnderecoIp());
+        ipModificado.setRede(ip.getRede());
+        em.merge(ip);
+    }
+
+    public void deletar(Ip ip) throws Exception {
+        this.em.remove(this.em.merge(ip));
+    }
+
     public List<String> buscarIpsSemVlan(Integer idDaRede) throws Exception {
         String consulta = "select "
                 + "ip.enderecoIp "
@@ -23,6 +47,13 @@ public class IpDao {
         query.setParameter("rede", idDaRede);
         List<String> lista = query.getResultList();
         return lista;
+    }
+
+    public List<Ip> buscarIpsPorRede(Integer id) {
+        Query query = this.em.createQuery("from ip i where rede_id = :rede");
+        query.setParameter("rede", id);
+        List<Ip> ips = query.getResultList();
+        return ips;
     }
 
 //   select  * from  subrede s inner join subrede_ip si  on s.id_subrede = si.id_subrede and id_vlan = 2

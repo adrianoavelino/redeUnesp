@@ -31,7 +31,7 @@
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 
                                      actionListener="#{redeController.deletar}"
-                                     update=":rede-tabela"
+                                     update=":rede-tabela :rede-cadastro"
                                      immediate="true">
                         <p:confirm header="Confirmação" message="Tem certeza que quer excluir a Rede?"
                                    icon="ui-icon-alert" />
