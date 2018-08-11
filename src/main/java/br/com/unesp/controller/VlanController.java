@@ -17,7 +17,7 @@ public class VlanController {
     @Inject
     private FacesMessages message;
     private Vlan vlan = new Vlan();
-    private List<Vlan> listaVlan;
+    private List<Vlan> listaDeIpsDaVlanSelecionada;
 
     public VlanController() {
     }
@@ -38,12 +38,12 @@ public class VlanController {
         this.vlan = vlan;
     }
 
-    public List<Vlan> getListaVlan() {
-        return listaVlan;
+    public List<Vlan> getListaDeIpsDaVlanSelecionada() {
+        return listaDeIpsDaVlanSelecionada;
     }
 
-    public void setListaVlan(List<Vlan> listaVlan) {
-        this.listaVlan = listaVlan;
+    public void setListaDeIpsDaVlanSelecionada(List<Vlan> listaDeIpsDaVlanSelecionada) {
+        this.listaDeIpsDaVlanSelecionada = listaDeIpsDaVlanSelecionada;
     }
 
     public void salvar() {

@@ -23,7 +23,7 @@ public class HostDao {
     
     
     public List<Host> listar() throws Exception {
-        Query query = this.em.createQuery("from host t");
+        Query query = this.em.createQuery("from host h");
         List<Host> hosts = query.getResultList();
         return hosts;
     }
@@ -35,9 +35,11 @@ public class HostDao {
     public void atualizar(Host host) throws Exception {
         Host hostModificado = em.find(Host.class, host.getId());
         hostModificado.setNome(host.getNome());
+        hostModificado.setUsuario(host.getUsuario());
         hostModificado.setMacAddres(host.getMacAddres());
         hostModificado.setTipo(host.getTipo());
-        em.merge(host);
+        hostModificado.setEnderecoIp(host.getEnderecoIp());
+        em.merge(hostModificado);
     }     
 
     public void deletar(Host host) throws Exception {

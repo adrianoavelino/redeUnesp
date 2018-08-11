@@ -13,6 +13,7 @@
             <h:panelGrid columns="2">
                 <p:outputLabel value="Nome:" for="nome" />
                 <p:inputText id="nome" value="#{hostController.host.nome}"/>
+                
                 <p:outputLabel value="Mac-addres:" for="macAddress" />
                 <p:inputText id="macAddress" value="#{hostController.host.macAddres}" />
                 <p:outputLabel value="Tipo do host:" />
@@ -20,7 +21,7 @@
                                  style="width: 200px;"
                                  converter="tipoHostConverter"
                                  value="#{hostController.host.tipo}">
-                    <f:selectItem itemLabel="Selecione um tipo" />
+                    <!--<f:selectItem itemLabel="Selecione um tipo" />-->
                     <f:selectItems value="#{tipoHostController.dao.listar()}"
                                    var="tipo"
                                    itemLabel="#{tipo.tipo}"
@@ -37,8 +38,31 @@
                                    itemLabel="#{usuario.nome}"
                                    itemValue="#{usuario}" />
                 </h:selectOneMenu>
-                <p:outputLabel />
-                <p:commandButton value="Salvar" action="#{hostController.salvar()}" update="host-cadastro :host-tabela" />
+                <h:outputLabel value="Vlan:" />
+                <p:selectOneMenu id="vlan"
+                                 value="#{hostController.vlan}">
+                    <f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />
+                    <f:selectItems value="#{vlanController.dao.listar()}"
+                                   var="vlan"
+                                   itemLabel="#{vlan.numero} - #{vlan.descricao}"
+                                   itemValue="#{vlan.id}" />
+                    <p:ajax update="nome macAddress tipoHost usuario ip vlan" listener="#{hostController.onSelectVlan()}" />
+                </p:selectOneMenu>        
+                <h:outputLabel value="Ip:"/>
+                <h:selectOneMenu id="ip"
+                                 value="#{hostController.ip}">
+                    <f:selectItem itemLabel="Selecione um IP" noSelectionOption="true" />
+                    <f:selectItems value="#{hostController.listaDeIps}"
+                                   var="ip"
+                                   itemLabel="#{ip}"
+                                   itemValue="#{ip}" />
+                </h:selectOneMenu>  
+                <p:commandButton 
+                    value="Salvar" 
+                    action="#{hostController.salvar()}" 
+                    update="host-cadastro :host-tabela" >
+                    <f:ajax execute="ip vlan" render="ip" />
+                </p:commandButton>
             </h:panelGrid>
         </h:form>
         <h:form id="host-tabela">
@@ -57,6 +81,9 @@
                 </p:column>
                 <p:column headerText="Usuario">
                     <h:outputText value="#{host.usuario.nome}" />
+                </p:column>
+                <p:column headerText="IP">
+                    <h:outputText value="#{host.enderecoIp}" />
                 </p:column>
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 
@@ -84,7 +111,7 @@
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
             </p:confirmDialog>  
         </h:form>
-        
+
     </ui:define>
 </ui:composition>
 

@@ -28,6 +28,7 @@ public class Host implements Serializable {
     @JoinColumn(name = "id_tipo_host")
     @NotNull(message = "Selecione um tipo de host")
     private TipoHost tipo;
+    private String enderecoIp;
     
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -82,6 +83,14 @@ public class Host implements Serializable {
         this.usuario = usuario;
     }
 
+    public String getEnderecoIp() {
+        return enderecoIp;
+    }
+
+    public void setEnderecoIp(String enderecoIp) {
+        this.enderecoIp = enderecoIp;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -109,7 +118,9 @@ public class Host implements Serializable {
 
     @Override
     public String toString() {
-        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + ", tipo=" + tipo + '}';
+        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + ", tipo=" + tipo + ", enderecoIp=" + enderecoIp + ", usuario=" + usuario + '}';
     }
+
+
 
 }

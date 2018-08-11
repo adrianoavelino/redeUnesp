@@ -1,6 +1,7 @@
 package br.com.unesp.model;
 
 import br.com.unesp.comparator.IpComparator;
+import com.sun.xml.internal.ws.developer.StreamingAttachment;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "rede")
@@ -30,6 +32,7 @@ public class Rede implements Serializable {
     @Column(name = "enderecoIp", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ip", joinColumns = @JoinColumn(name = "id_rede"))
+    @MapKeyColumn(name = "cp")
     private List<String> listaIps = new ArrayList<>();
     
     
