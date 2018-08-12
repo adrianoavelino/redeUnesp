@@ -14,28 +14,30 @@
 
                 <p:outputLabel value="Rede:" />
                 <h:selectOneMenu id="rede"
+                                 converter="redeConverter"
                                  value="#{subredeController.subrede.rede}">
-                    <f:selectItem itemLabel="Selecione uma rede" itemValue="" />
+                    <!--<f:selectItem itemLabel="Selecione uma rede" itemValue="" />-->
                     <f:selectItems value="#{redeController.dao.listar()}"
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
-                                   itemValue="#{rede.id}" />
+                                   itemValue="#{rede}" />
                 </h:selectOneMenu>    
 
                 <p:outputLabel value="Vlan:" />
                 <h:selectOneMenu id="vlan"
+                                 converter="vlanConverter"
                                  value="#{subredeController.subrede.vlan}">
-                    <f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />
+                    <!--<f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />-->
                     <f:selectItems value="#{vlanController.dao.listar()}"
                                    var="vlan"
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
-                                   itemValue="#{vlan.id}" />
+                                   itemValue="#{vlan}" />
                 </h:selectOneMenu>    
 
                 <p:outputLabel value="Máscara de rede:" />
                 <h:selectOneMenu id="qtdHosts"
                                  value="#{subredeController.subrede.netmask}">
-                    <f:selectItem itemLabel="Selecione uma Máscara de Rede" itemValue="" />
+                    <!--<f:selectItem itemLabel="Selecione uma Máscara de Rede" itemValue="" />-->
                     <f:selectItems value="#{subredeController.marcarasDeRede}"
                                    var="qtd"
                                    itemLabel="#{mascara}"
@@ -51,22 +53,10 @@
         <h:form id="subrede-tabela">
             <p:dataTable value="#{subredeController.dao.listar()}" var="subrede">
                 <p:column headerText="Vlan">
-                    <h:outputText value="#{vlanController.pegarDescricaoDaVlanPorId(subrede.vlan)}" />
-                </p:column>
-                <p:column headerText="Qtd" style="width: 50px">
-                    <h:outputText value="#{subrede.listaEnderecoIpSubrede.size()}" />
-                </p:column>
-                <p:column headerText="Range de Ips" style="width: 300px">
-                    <h:outputText value="#{subredeController.getEnderecoRede(subrede.listaEnderecoIpSubrede)} - #{subredeController.getIpFinal(subrede.listaEnderecoIpSubrede)}" />
-                </p:column>
-                <p:column headerText="Network">
-                    <h:outputText value="#{subredeController.getEnderecoRede(subrede.listaEnderecoIpSubrede)}" />
+                    <h:outputText value="#{vlanController.pegarDescricaoDaVlanPorId(subrede.vlan.id)}" />
                 </p:column>
                 <p:column headerText="Netmask">
                     <h:outputText value="#{subrede.netmask}" />
-                </p:column>
-                <p:column headerText="Gateway">
-                    <h:outputText value="#{subredeController.getEnderecoGateway(subrede.listaEnderecoIpSubrede)}" />
                 </p:column>
             </p:dataTable>
         </h:form>    

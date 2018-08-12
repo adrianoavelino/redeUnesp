@@ -35,7 +35,6 @@ public class SubredeDao {
     public void atualizar(Subrede subrede) throws Exception {
         Subrede subredeModificada = em.find(Subrede.class, subrede.getId());
         subredeModificada.setNetmask(subrede.getNetmask());
-        subredeModificada.setListaEnderecoIpSubrede(subrede.getListaEnderecoIpSubrede());
         em.merge(subredeModificada);
     }
 

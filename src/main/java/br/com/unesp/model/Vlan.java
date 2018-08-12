@@ -3,7 +3,6 @@ package br.com.unesp.model;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,11 +30,6 @@ public class Vlan implements Serializable {
     @JoinColumn(name = "id_grupoRede")
     @NotNull(message = "Selecione um Grupo de Rede")
     private GrupoRede grupoRede;
-
-    
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_vlan", referencedColumnName = "id_vlan")
-    private Set<Subrede> listaSubrede;
 
     public Vlan() {
     }
@@ -80,14 +74,6 @@ public class Vlan implements Serializable {
         this.descricao = descricao;
     }
 
-    public Set<Subrede> getListaSubrede() {
-        return listaSubrede;
-    }
-
-    public void setListaSubrede(Set<Subrede> listaSubrede) {
-        this.listaSubrede = listaSubrede;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -117,5 +103,4 @@ public class Vlan implements Serializable {
     public String toString() {
         return "Vlan{" + "id=" + id + ", numero=" + numero + ", descricao=" + descricao + " '}'";
     }
-
 }

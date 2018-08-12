@@ -5,13 +5,12 @@ import br.com.unesp.dao.IpDao;
 import br.com.unesp.dao.VlanDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Host;
+import br.com.unesp.model.Ip;
 import br.com.unesp.model.Vlan;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
@@ -34,7 +33,7 @@ public class HostController implements Serializable {
     private Collection<Host> hosts;
     private Integer vlan;
     private String ip;
-    private List<String> listaDeIps;
+    private List<Ip> listaDeIps;
     private List<Vlan> vlans;
 
     public HostController() {
@@ -106,11 +105,11 @@ public class HostController implements Serializable {
         this.ip = ip;
     }
 
-    public List<String> getListaDeIps() {
+    public List<Ip> getListaDeIps() {
         return listaDeIps;
     }
 
-    public void setListaDeIps(List<String> listaDeIps) {
+    public void setListaDeIps(List<Ip> listaDeIps) {
         this.listaDeIps = listaDeIps;
     }
 

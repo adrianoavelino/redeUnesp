@@ -3,6 +3,7 @@ package br.com.unesp.controller;
 import br.com.unesp.dao.IpDao;
 import br.com.unesp.dao.SubredeDao;
 import br.com.unesp.jsf.message.FacesMessages;
+import br.com.unesp.model.Ip;
 import br.com.unesp.model.Subrede;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,30 +53,31 @@ public class SubredeController {
         this.listaSubrede = listaSubrede;
     }
 
-    public void salvar() {
-        if (subrede.getId() == null) {
-            this.quantidadeDeHosts = subrede.convertNetmaskToQuantidadeDeHost(subrede.getNetmask());
-            List<String> ipsDaSubrede = this.getIpsSubrede();
-            int quantidadeDeIpsdaSubrede = getQuantidadeDeIpsDaSubrede(ipsDaSubrede);
+    public void salvar() throws Exception {
+        this.quantidadeDeHosts = subrede.convertNetmaskToQuantidadeDeHost(subrede.getNetmask());
+        List<Ip> ipsDaSubrede = this.getIpsSubrede();
+        int quantidadeDeIpsdaSubrede = getQuantidadeDeIpsDaSubrede(ipsDaSubrede);
 
-            if (ipsDaSubrede.isEmpty() || this.quantidadeDeHosts < quantidadeDeIpsdaSubrede) {
-                message.error("Não existem ips suficientes na rede. Nessa rede existem somente " + this.getIpsLivres().size() + " ips livres");
-            } else {
-                subrede.setListaEnderecoIpSubrede(ipsDaSubrede);
-                dao.save(subrede);
-                message.info("Subrede salva com sucesso");
-                subrede = new Subrede();
-            }
+//        dao.save(subrede);
+//        message.info("Subrede salva com sucesso" + this.ipdao.buscarIpsSemVlan(subrede.getRede().getId()));
+//        message.info("Subrede salva com sucesso" + ipsDaSubrede);
+//        subrede = new Subrede();
+        if (ipsDaSubrede.isEmpty() || this.quantidadeDeHosts < quantidadeDeIpsdaSubrede) {
+            message.error("Não existem ips suficientes na rede. Nessa rede existem somente " + this.getIpsLivres().size() + " ips livres");
+        } else {
+            dao.save(subrede);
+            message.info("Salvo com sucesso!");
+            
         }
     }
 
-    private int getQuantidadeDeIpsDaSubrede(List<String> ips) {
+    private int getQuantidadeDeIpsDaSubrede(List<Ip> ips) {
         return ips.size();
     }
 
-    private List<String> getIpsLivres() {
+    private List<Ip> getIpsLivres() {
         try {
-            List<String> lista = this.ipdao.buscarIpsSemVlan(this.subrede.getRede());
+            List<Ip> lista = this.ipdao.buscarIpsSemVlan(this.subrede.getRede().getId());
             return lista;
         } catch (Exception e) {
             message.error("Erro ao realizar a consulta de ips livres para subrede");
@@ -84,7 +86,7 @@ public class SubredeController {
         }
     }
 
-    public List<String> getIpsSubrede() {
+    public List<Ip> getIpsSubrede() {
         try {
             return this.getIpsLivres().subList(0, this.quantidadeDeHosts);
         } catch (Exception e) {
@@ -94,14 +96,23 @@ public class SubredeController {
     }
 
     public String getIpFinal(List<String> listaEnderecoIp) {
+        if (listaEnderecoIp.isEmpty()) {
+            return "";
+        }
         return listaEnderecoIp.get(listaEnderecoIp.size() - 1);
     }
 
     public String getEnderecoRede(List<String> listaEnderecoIp) {
+        if (listaEnderecoIp.isEmpty()) {
+            return "";
+        }
         return listaEnderecoIp.get(0);
     }
 
     public String getEnderecoGateway(List<String> listaEnderecoIp) {
+        if (listaEnderecoIp.isEmpty()) {
+            return "";
+        }
         return listaEnderecoIp.get(listaEnderecoIp.size() - 2);
     }
 
