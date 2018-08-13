@@ -58,16 +58,15 @@ public class SubredeController {
         List<Ip> ipsDaSubrede = this.getIpsSubrede();
         int quantidadeDeIpsdaSubrede = getQuantidadeDeIpsDaSubrede(ipsDaSubrede);
 
-//        dao.save(subrede);
-//        message.info("Subrede salva com sucesso" + this.ipdao.buscarIpsSemVlan(subrede.getRede().getId()));
-//        message.info("Subrede salva com sucesso" + ipsDaSubrede);
-//        subrede = new Subrede();
         if (ipsDaSubrede.isEmpty() || this.quantidadeDeHosts < quantidadeDeIpsdaSubrede) {
             message.error("Não existem ips suficientes na rede. Nessa rede existem somente " + this.getIpsLivres().size() + " ips livres");
         } else {
+
+            subrede.setIps(ipsDaSubrede);
             dao.save(subrede);
             message.info("Salvo com sucesso!");
-            
+            subrede = new Subrede();
+
         }
     }
 
@@ -95,25 +94,25 @@ public class SubredeController {
         }
     }
 
-    public String getIpFinal(List<String> listaEnderecoIp) {
+    public String getIpFinal(List<Ip> listaEnderecoIp) {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(listaEnderecoIp.size() - 1);
+        return listaEnderecoIp.get(listaEnderecoIp.size() - 1).getEnderecoIp();
     }
 
-    public String getEnderecoRede(List<String> listaEnderecoIp) {
+    public String getEnderecoRede(List<Ip> listaEnderecoIp) {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(0);
+        return listaEnderecoIp.get(0).getEnderecoIp();
     }
 
-    public String getEnderecoGateway(List<String> listaEnderecoIp) {
+    public String getEnderecoGateway(List<Ip> listaEnderecoIp) {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(listaEnderecoIp.size() - 2);
+        return listaEnderecoIp.get(listaEnderecoIp.size() - 2).getEnderecoIp();
     }
 
     private String getEnderecoGateway(Set<String> listaEnderecoIp) {

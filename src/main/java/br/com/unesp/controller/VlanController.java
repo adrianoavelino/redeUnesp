@@ -75,8 +75,4 @@ public class VlanController {
     public void editar(ActionEvent evento) {
         vlan = (Vlan) evento.getComponent().getAttributes().get("vlanSelecionada");
     }
-
-    public String pegarDescricaoDaVlanPorId(Integer idDaVlan) {
-        return dao.buscarPorId(idDaVlan).getDescricao();
-    }
 }

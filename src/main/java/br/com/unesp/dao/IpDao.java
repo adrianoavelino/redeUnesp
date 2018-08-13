@@ -1,14 +1,13 @@
 package br.com.unesp.dao;
 
 import br.com.unesp.model.Ip;
-import br.com.unesp.model.Rede;
-import br.com.unesp.model.Subrede;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class IpDao {
@@ -38,15 +37,24 @@ public class IpDao {
     }
 
     public List<Ip> buscarIpsSemVlan(Integer idDaRede) throws Exception {
-        String consulta = "select "
-                + "ip.enderecoIp "
-                + "from ip inner join rede on rede.id_rede = ip.rede_id "
-                + "where rede.id_rede = :rede and ip.enderecoIp "
-                + "not in (select enderecoIp from subrede_ip)";
-        Query query = this.em.createNativeQuery(consulta);
+        String consulta = "select distinct i from ip i inner join i.rede r "
+                + "where i.enderecoIp not in :ipsSemSubrede "
+                + " and r.id = :rede ";
+        List<String> ipsSemSubrede = this.buscarIpsSubrede();
+        TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+        query.setParameter("ipsSemSubrede", ipsSemSubrede);
         query.setParameter("rede", idDaRede);
-        List<Ip> lista = query.getResultList();
-        return lista;
+        List<Ip> rede = query.getResultList();
+
+        return rede;
+    }
+
+    public List<String> buscarIpsSubrede() throws Exception {
+        String consulta = "select ip.enderecoIp from subrede_ip "
+                + " inner join ip on subrede_ip.enderecoIp = ip.ip_id";
+        Query query = this.em.createNativeQuery(consulta);
+        List<String> ipsDaSubrede = query.getResultList();
+        return ipsDaSubrede;
     }
 
     public List<Ip> buscarIpsPorRede(Integer id) {
@@ -56,7 +64,6 @@ public class IpDao {
         return ips;
     }
 
-//   select  * from  subrede s inner join subrede_ip si  on s.id_subrede = si.id_subrede and id_vlan = 2
     public List<Ip> buscarIpsDaVlan(Integer idDaVlan) {
         String consulta = "select "
                 + "si.enderecoIp "

@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -36,7 +37,7 @@ public class Subrede implements Serializable {
     @JoinColumn(name = "vlan_id")
     private Vlan vlan;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "subrede_ip",
             joinColumns = @JoinColumn(name = "id_subrede"),
             inverseJoinColumns = @JoinColumn(name = "enderecoIp"))
@@ -77,6 +78,14 @@ public class Subrede implements Serializable {
         this.vlan = vlan;
     }
 
+    public List<Ip> getIps() {
+        return ips;
+    }
+
+    public void setIps(List<Ip> ips) {
+        this.ips = ips;
+    }
+    
     public String converteQuantidadeDeHostsParaNetmask(int tamanhoSubrede) {
         String mynetmask = null;
         switch (tamanhoSubrede) {
@@ -170,7 +179,7 @@ public class Subrede implements Serializable {
 
     @Override
     public String toString() {
-        return "Subrede{" + "id=" + id + ", netmask=" + netmask + '}';
+        return "Subrede{" + "id=" + id + ", netmask=" + netmask + ", rede=" + rede + ", vlan=" + vlan + ", ips=" + ips + '}';
     }
 
 }

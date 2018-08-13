@@ -8,6 +8,8 @@
 
 # Mysql
 drop database redeUnesp;create database redeUnesp;use redeUnesp;
+mysqldump -u root -p redeUnesp --complete-insert > redeUnesp.sql
+grep INSERT redeUnesp.sql #pega todos insert do arquivo
 
 -Host
     - verificar nome duplicado
@@ -19,7 +21,8 @@ drop database redeUnesp;create database redeUnesp;use redeUnesp;
     - verificar endereco duplicado
     - adicionar mascara
     - verificar ip válido
-    - atualizar os ips ao modificar a rede.Obs: o ip pega o endereço de rede para formar a rede)
+    - atualizar os ips ao modificar a rede.Obs: o ip pega o endereço de rede para formar a rede) ou remover o editar ou guardar somente o ultimo octeto
+    - corrigir bug ao deletar rede. Obs: o deletar prenche o campo endereço da rede
 
 - Vlan
     - validar campo número com converter - traduzir mensagem ou trocar por String

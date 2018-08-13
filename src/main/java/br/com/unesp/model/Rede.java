@@ -1,17 +1,14 @@
 package br.com.unesp.model;
 
-import br.com.unesp.comparator.IpComparator;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity(name = "rede")
@@ -23,9 +20,9 @@ public class Rede implements Serializable {
     private Integer id;
     @NotBlank(message = "O campo endereço está vazio")
     private String endereco;
+    @OneToMany(mappedBy = "rede")
+    private List<Ip> ips;
 
-    
-    
     public Rede() {
     }
 
@@ -76,7 +73,7 @@ public class Rede implements Serializable {
 
     @Override
     public String toString() {
-        return "Rede{" + "id=" + id + ", endereco=" + endereco +'}';
+        return "Rede{" + "id=" + id + ", endereco=" + endereco + '}';
     }
 
 }

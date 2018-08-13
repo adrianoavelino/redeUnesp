@@ -52,11 +52,26 @@
         </h:form>
         <h:form id="subrede-tabela">
             <p:dataTable value="#{subredeController.dao.listar()}" var="subrede">
-                <p:column headerText="Vlan">
-                    <h:outputText value="#{vlanController.pegarDescricaoDaVlanPorId(subrede.vlan.id)}" />
+                <p:column headerText="Vlan" style="width: 50px">
+                    <h:outputText value="#{subrede.vlan.numero}" />
+                </p:column>
+                <p:column headerText="Rede">
+                    <h:outputText value="#{subrede.rede.endereco}.0" />
+                </p:column>
+                <p:column headerText="Hosts">
+                    <h:outputText value="#{subrede.convertNetmaskToQuantidadeDeHost(subrede.netmask)}" />
+                </p:column>
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{subrede.vlan.descricao}" />
+                </p:column>
+                <p:column headerText="Range">
+                    <h:outputText value="#{subredeController.getEnderecoRede(subrede.ips)} - #{subredeController.getIpFinal(subrede.ips)}" />
                 </p:column>
                 <p:column headerText="Netmask">
                     <h:outputText value="#{subrede.netmask}" />
+                </p:column>
+                <p:column headerText="Gateway">
+                    <h:outputText value="#{subredeController.getEnderecoGateway(subrede.ips)}" />
                 </p:column>
             </p:dataTable>
         </h:form>    

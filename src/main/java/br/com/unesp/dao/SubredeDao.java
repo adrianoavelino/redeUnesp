@@ -1,5 +1,6 @@
 package br.com.unesp.dao;
 
+import br.com.unesp.model.Rede;
 import br.com.unesp.model.Subrede;
 import java.util.Collections;
 import java.util.List;
@@ -42,10 +43,10 @@ public class SubredeDao {
         this.em.remove(this.em.merge(subrede));
     }
 
-    public List<Subrede> buscarSubredesPorRede(Integer idDaRede) {
+    public List<Subrede> buscarSubredesPorRede(Rede rede) {
         try {
-            Query query = this.em.createQuery("select s from subrede s where  rede = :rede");
-            query.setParameter("rede", idDaRede);
+            Query query = this.em.createQuery("select s from subrede s where  s.rede = :rede");
+            query.setParameter("rede", rede);
             List<Subrede> subredes = query.getResultList();
             return subredes;
         } catch (Exception e) {

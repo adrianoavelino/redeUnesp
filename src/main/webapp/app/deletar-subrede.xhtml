@@ -8,19 +8,19 @@
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
         <h:form id="deletar-subrede-cadastro">
-                Selecione uma Rede para deletar as Subredes
+            Selecione uma Rede para deletar as Subredes
             <p:messages />
             <h:inputHidden value="#{subredeController.subrede.id}" />
             <h:panelGrid columns="4">
                 <p:outputLabel value="Rede:" />
                 <h:selectOneMenu id="rede"
+                                 converter="redeConverter"
                                  value="#{deleteSubredeController.rede}">
-                    <f:selectItem itemLabel="Selecione uma Rede" 
-                                  itemValue=""/>
+                    <f:selectItem itemLabel="Selecione uma rede" itemValue="" />
                     <f:selectItems value="#{redeController.dao.listar()}"
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
-                                   itemValue="#{rede.id}" />
+                                   itemValue="#{rede}" />
                 </h:selectOneMenu>    
 
                 <h:outputLabel />
@@ -30,29 +30,24 @@
                 </p:commandButton>
             </h:panelGrid>
         </h:form>
-        
+
         <h:form id="subrede-tabela">
             <p:dataTable value="#{subredeController.dao.listar()}" var="subrede">
                 <p:column headerText="id">
                     <h:outputText value="#{subrede.id}" />
                 </p:column>
                 <p:column headerText="Vlan">
-                    <h:outputText value="#{vlanController.pegarDescricaoDaVlanPorId(subrede.vlan)}" />
+                    <h:outputText value="#{subrede.vlan.descricao}" />
                 </p:column>
                 <p:column headerText="Qtd" style="width: 50px">
-                    <h:outputText value="#{subrede.listaEnderecoIpSubrede.size()}" />
+                    <h:outputText value="-" />
                 </p:column>
-                <p:column headerText="Range de Ips" style="width: 300px">
-                    <h:outputText value="#{subredeController.getEnderecoRede(subrede.listaEnderecoIpSubrede)} - #{subredeController.getIpFinal(subrede.listaEnderecoIpSubrede)}" />
-                </p:column>
-                <p:column headerText="Network">
-                    <h:outputText value="#{subredeController.getEnderecoRede(subrede.listaEnderecoIpSubrede)}" />
-                </p:column>
+
                 <p:column headerText="Netmask">
                     <h:outputText value="#{subrede.netmask}" />
                 </p:column>
                 <p:column headerText="Gateway">
-                    <h:outputText value="#{subredeController.getEnderecoGateway(subrede.listaEnderecoIpSubrede)}" />
+                    <h:outputText value="#{subredeController.getEnderecoGateway(subrede.ips)}" />
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true">
