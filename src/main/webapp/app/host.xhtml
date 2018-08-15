@@ -21,7 +21,7 @@
                                  style="width: 200px;"
                                  converter="tipoHostConverter"
                                  value="#{hostController.host.tipo}">
-                    <!--<f:selectItem itemLabel="Selecione um tipo" />-->
+                    <f:selectItem itemLabel="Selecione um tipo" />
                     <f:selectItems value="#{tipoHostController.dao.listar()}"
                                    var="tipo"
                                    itemLabel="#{tipo.tipo}"
@@ -39,34 +39,37 @@
                                    itemValue="#{usuario}" />
                 </h:selectOneMenu>
                 <h:outputLabel value="Vlan:" />
-                <p:selectOneMenu id="vlan"
+                <h:selectOneMenu id="vlan"
+                                 converter="vlanConverter"
                                  value="#{hostController.vlan}">
-                    <f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />
+                    <f:selectItem itemLabel="Selecione uma Vlan"   />
                     <f:selectItems value="#{vlanController.dao.listar()}"
                                    var="vlan"
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
-                                   itemValue="#{vlan.id}" />
-                    <p:ajax update="nome macAddress tipoHost usuario ip vlan" listener="#{hostController.onSelectVlan()}" />
-                </p:selectOneMenu>        
+                                   itemValue="#{vlan}" />
+                    <p:ajax update="vlan ip" listener="#{hostController.onSelectVlan()}" />
+                </h:selectOneMenu>        
                 <h:outputLabel value="Ip:"/>
                 <h:selectOneMenu id="ip"
-                                 value="#{hostController.ip}">
+                                 converter="ipConverter"
+                                 value="#{hostController.host.ip}">
                     <f:selectItem itemLabel="Selecione um IP" noSelectionOption="true" />
                     <f:selectItems value="#{hostController.listaDeIps}"
                                    var="ip"
-                                   itemLabel="#{ip}"
+                                   itemLabel="#{ip.enderecoIp}"
                                    itemValue="#{ip}" />
                 </h:selectOneMenu>  
+
+                <h:outputLabel />
                 <p:commandButton 
                     value="Salvar" 
                     action="#{hostController.salvar()}" 
                     update="host-cadastro :host-tabela" >
-                    <f:ajax execute="ip vlan" render="ip" />
                 </p:commandButton>
             </h:panelGrid>
         </h:form>
         <h:form id="host-tabela">
-            <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 900px">
+            <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 1000px">
                 <p:column headerText="Id">
                     <h:outputText value="#{host.id}" />
                 </p:column>
@@ -82,8 +85,11 @@
                 <p:column headerText="Usuario">
                     <h:outputText value="#{host.usuario.nome}" />
                 </p:column>
+                <p:column headerText="Vlan">
+                    <h:outputText value="#{hostController.buscarDescricaoDaVlan(host.ip.id)}" />
+                </p:column>
                 <p:column headerText="IP">
-                    <h:outputText value="#{host.enderecoIp}" />
+                    <h:outputText value="#{host.ip.enderecoIp}" />
                 </p:column>
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 
@@ -97,7 +103,7 @@
                     </p:commandButton>
                     <p:commandButton icon="ui-icon-pencil" 
                                      actionListener="#{hostController.editar}" 
-                                     update=":host-cadastro" 
+                                     update=":host-cadastro :host-cadastro:ip" 
                                      immediate="true">
                         <p:resetInput target=":host-cadastro" />
                         <f:attribute name="hostSelecionado" value="#{host}" />

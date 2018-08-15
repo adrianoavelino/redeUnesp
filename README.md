@@ -43,3 +43,4 @@ grep INSERT redeUnesp.sql #pega todos insert do arquivo
     - remover css inline (style)
     - corrigir Doctype para html5
     - alterar selectOneMenu para a versão primefaces
+    - adicionar validação jsf

@@ -31,8 +31,8 @@ public class HostController implements Serializable {
     private FacesMessages message;
     private Host host = new Host();
     private Collection<Host> hosts;
-    private Integer vlan;
-    private String ip;
+    private Vlan vlan;
+    private Ip ip;
     private List<Ip> listaDeIps;
     private List<Vlan> vlans;
 
@@ -43,13 +43,7 @@ public class HostController implements Serializable {
 
     @PostConstruct
     public void init() {
-        try {
-            vlans = vlanDao.listar();
-        } catch (Exception ex) {
-            message.error("erro ao listar vlans");
-        }
-        host.setNome("pc");
-        host.setMacAddres("11:11");
+        this.carregarVlans();
     }
 
     public HostDao getDao() {
@@ -89,19 +83,19 @@ public class HostController implements Serializable {
         this.hosts = hosts;
     }
 
-    public Integer getVlan() {
+    public Vlan getVlan() {
         return vlan;
     }
 
-    public void setVlan(Integer vlan) {
+    public void setVlan(Vlan vlan) {
         this.vlan = vlan;
     }
 
-    public String getIp() {
+    public Ip getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(Ip ip) {
         this.ip = ip;
     }
 
@@ -123,35 +117,45 @@ public class HostController implements Serializable {
 
     public void salvar() {
         if (host.getId() == null) {
-            if (vlan != null && ip == null) {
-                if (ip == null) {
-                    message.error("Selecione um IP");
-                }
-            } else {
-                host.setEnderecoIp(ip);
-//                dao.salvar(this.host);
-                message.info("Salvo com sucesso!" + host);
-//                host = new Host();
+            if (this.validate()) {
+                dao.salvar(this.host);
+                message.info("Salvo com sucesso!");
+                host = new Host();
+                vlan = null;
+                this.listaDeIps = null;
             }
         } else {
-            if (vlan != null && ip == null) {
-                message.error("Selecione um IP");
-            } else {
-                host.setEnderecoIp(ip);
+            if (this.validate()) {
                 try {
                     dao.atualizar(this.host);
+                    message.info("Atualizado com sucesso!");
+                    host = new Host();
+                    vlan = null;
+                    this.carregarVlans();
+                    this.listaDeIps = null;
                 } catch (Exception ex) {
-                    message.error("erro ao atualizar host");
-                }
-                message.info("Atualiza" + host);
-                host = new Host();
-                try {
-                    vlans = vlanDao.listar();
-                } catch (Exception ex) {
-                    message.error("Erro ao listar vlans");
+                    message.error("Erro ao atualizar host");
                 }
             }
         }
+    }
+
+    private void carregarVlans() {
+        try {
+            vlans = vlanDao.listar();
+        } catch (Exception ex) {
+            message.error("Erro ao listar vlans");
+        }
+    }
+
+    private boolean validate() {
+        if (vlan != null && host.getIp() == null) {
+            if (ip == null) {
+                message.error("Selecione um IP");
+                return false;
+            }
+        }
+        return true;
     }
 
     public void deletar(ActionEvent evento) {
@@ -165,21 +169,29 @@ public class HostController implements Serializable {
 
     public void editar(ActionEvent evento) {
         host = (Host) evento.getComponent().getAttributes().get("hostSelecionado");
+        if (host.getIp() != null) {
+            Long idDoIp = host.getIp().getId();
+            vlan = vlanDao.buscarPorIp(idDoIp);
+            listaDeIps = ipDao.buscarIpsDaVlan(vlan.getId());
+            listaDeIps.add(host.getIp());
+        }
     }
 
     public void onSelectVlan() {
+        if (vlan == null) {
+            this.listaDeIps = null;
+            return;
+        }
         try {
-            listaDeIps = ipDao.buscarIpsDaVlan(vlan);
+            int idDaVlan = vlan.getId();
+            this.listaDeIps = ipDao.buscarIpsDaVlan(idDaVlan);
         } catch (Exception ex) {
             message.error("Erro ao selecionar os ips da vlan " + vlan);
             ex.printStackTrace();
         }
     }
 
-//    public void onSelectIp() {
-//        host.setEnderecoIp(ip);
-//    }
-//    public void testar() {
-//        message.info("testar");
-//    }
+    public String buscarDescricaoDaVlan(Long idDoIp) {
+        return vlanDao.buscarPorIp(idDoIp).getDescricao();
+    }
 }

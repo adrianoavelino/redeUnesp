@@ -38,7 +38,7 @@ public class HostDao {
         hostModificado.setUsuario(host.getUsuario());
         hostModificado.setMacAddres(host.getMacAddres());
         hostModificado.setTipo(host.getTipo());
-        hostModificado.setEnderecoIp(host.getEnderecoIp());
+        hostModificado.setIp(host.getIp());
         em.merge(hostModificado);
     }     
 
