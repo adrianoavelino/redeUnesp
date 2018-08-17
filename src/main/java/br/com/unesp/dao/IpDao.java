@@ -18,7 +18,7 @@ public class IpDao {
 
     @PersistenceContext(unitName = "redeUnespPU")
     private EntityManager em;
-    
+
     @Inject
     private SubredeDao subredeDao;
 
@@ -44,23 +44,57 @@ public class IpDao {
     }
 
     public List<Ip> buscarIpsSemVlan(Integer idDaRede) throws Exception {
+        List<String> ipsSemSubrede = this.buscarIpsSubrede();
+        String consulta;
+        List<Ip> rede;
+        if (ipsSemSubrede.isEmpty()) {
+            consulta = "select i from ip i inner join i.rede r where r.id = :rede";
+            TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+            query.setParameter("rede", idDaRede);
+            rede = query.getResultList();
+        } else {
+            consulta = "select i from ip i inner join i.rede r where i.enderecoIp not in :ipsSemSubrede and r.id = :rede";
+            TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+            query.setParameter("ipsSemSubrede", ipsSemSubrede);
+            query.setParameter("rede", idDaRede);
+            rede = query.getResultList();
+        }
+        try {
+            return rede;
+        } catch (Exception e) {
+            System.out.println("Erro ao selecionar ips sem vlan" + e);
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Ip> buscarIpsSemVlanOld(Integer idDaRede) throws Exception {
         String consulta = "select distinct i from ip i inner join i.rede r "
                 + "where i.enderecoIp not in :ipsSemSubrede "
                 + " and r.id = :rede ";
-        List<String> ipsSemSubrede = this.buscarIpsSubrede();
-        TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
-        query.setParameter("ipsSemSubrede", ipsSemSubrede);
-        query.setParameter("rede", idDaRede);
-        List<Ip> rede = query.getResultList();
-        return rede;
+        try {
+            List<String> ipsSemSubrede = this.buscarIpsSubrede();
+            TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+            query.setParameter("ipsSemSubrede", ipsSemSubrede);
+            query.setParameter("rede", idDaRede);
+            List<Ip> rede = query.getResultList();
+            return rede;
+        } catch (Exception e) {
+            System.out.println("Erro ao selecionar ips sem vlan" + e);
+            return Collections.emptyList();
+        }
     }
 
-    private List<String> buscarIpsSubrede() throws Exception {
-        String consulta = "select distinct ip.enderecoIp from subrede_ip "
+    public List<String> buscarIpsSubrede() throws Exception {
+        String consulta = "select ip.enderecoIp from subrede_ip "
                 + " inner join ip on subrede_ip.enderecoIp = ip.ip_id";
-        Query query = this.em.createNativeQuery(consulta);
-        List<String> ipsDaSubrede = query.getResultList();
-        return ipsDaSubrede;
+        try {
+            Query query = this.em.createNativeQuery(consulta);
+            List<String> ipsDaSubrede = query.getResultList();
+            return ipsDaSubrede;
+
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     public List<Ip> buscarIpsPorRede(Integer id) {
@@ -135,4 +169,7 @@ public class IpDao {
         }
         return ipsDaSubrede;
     }
+    
+//    buscar vlan por ip
+//    select * from subrede s inner join subrede_ip si on s.id_subrede = si.id_subrede where si.enderecoIp = 1;
 }

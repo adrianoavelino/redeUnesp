@@ -58,7 +58,7 @@ public class SubredeController {
         List<Ip> ipsDaSubrede = this.getIpsSubrede();
         int quantidadeDeIpsdaSubrede = getQuantidadeDeIpsDaSubrede(ipsDaSubrede);
 
-        if (ipsDaSubrede.isEmpty() || this.quantidadeDeHosts < quantidadeDeIpsdaSubrede) {
+        if (this.quantidadeDeHosts > quantidadeDeIpsdaSubrede) {
             message.error("Não existem ips suficientes na rede. Nessa rede existem somente " + this.getIpsLivres().size() + " ips livres");
         } else {
 
@@ -84,7 +84,7 @@ public class SubredeController {
             return Collections.emptyList();
         }
     }
-
+    
     public List<Ip> getIpsSubrede() {
         try {
             return this.getIpsLivres().subList(0, this.quantidadeDeHosts);

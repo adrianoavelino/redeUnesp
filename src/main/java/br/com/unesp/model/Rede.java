@@ -16,7 +16,7 @@ public class Rede implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rede")
+    @Column(name = "rede_id")
     private Integer id;
     @NotBlank(message = "O campo endereço está vazio")
     private String endereco;
