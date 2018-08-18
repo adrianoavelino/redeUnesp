@@ -120,6 +120,20 @@ public class IpDao {
         return lista;
     }
 
+    public List<Ip> buscarIpsPorVlan(Integer vlan) {
+        String consulta = "select  i from subrede s inner join s.ips i where s.vlan.id = :vlan";
+        Query query = this.em.createQuery(consulta);
+        query.setParameter("vlan", vlan);
+        List<Ip> lista;
+        try {
+            lista = query.getResultList();
+        } catch (Exception e) {
+            System.out.println("Erro ao selecionar ips da subrede" + e);
+            lista = Collections.emptyList();
+        }
+        return lista;
+    }
+
     private List<String> getIpsEmUso() {
         List<String> ipsEmUso = new ArrayList<>();
         ipsEmUso.addAll(this.buscarIpsHosts());

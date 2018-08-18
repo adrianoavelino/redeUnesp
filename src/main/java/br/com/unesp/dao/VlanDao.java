@@ -61,4 +61,11 @@ public class VlanDao {
             return new Vlan();
         }
     }
+    
+
+    public List<Vlan> buscarVlanPorRede(Integer idDaRede) {
+        Query query = this.em.createQuery("select v from subrede s inner join s.vlan v order by v.numero");
+        List<Vlan> vlans = query.getResultList();
+        return vlans;
+    }    
 }

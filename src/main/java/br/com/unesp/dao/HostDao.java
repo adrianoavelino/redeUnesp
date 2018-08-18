@@ -1,6 +1,7 @@
 package br.com.unesp.dao;
 
 import br.com.unesp.model.Host;
+import br.com.unesp.model.Ip;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

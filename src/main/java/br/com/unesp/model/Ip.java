@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity(name = "ip")
 public class Ip implements Serializable {
@@ -23,6 +24,8 @@ public class Ip implements Serializable {
     @ManyToOne
     @JoinColumn(name = "rede_id")
     private Rede rede;
+    @OneToOne(mappedBy = "ip")
+    private Host host;
 
     public Ip() {
     }
@@ -55,6 +58,16 @@ public class Ip implements Serializable {
     public void setRede(Rede rede) {
         this.rede = rede;
     }
+
+    public Host getHost() {
+        return host;
+    }
+
+    public void setHost(Host host) {
+        this.host = host;
+    }
+    
+    
 
     @Override
     public int hashCode() {

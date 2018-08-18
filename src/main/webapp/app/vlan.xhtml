@@ -34,7 +34,7 @@
             </h:panelGrid>
         </h:form>
         <h:form id="vlan-tabela">
-            <p:dataTable value="#{vlanController.dao.listar()}" var="vlan" style="width: 900px">
+            <p:dataTable value="#{vlanController.vlanDao.listar()}" var="vlan" style="width: 900px">
                 <p:column headerText="Id">
                     <h:outputText value="#{vlan.id}" />
                 </p:column>

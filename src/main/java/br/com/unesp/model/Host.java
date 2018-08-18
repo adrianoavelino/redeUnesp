@@ -28,6 +28,7 @@ public class Host implements Serializable {
     @JoinColumn(name = "id_tipo_host")
     @NotNull(message = "Selecione um tipo de host")
     private TipoHost tipo;
+    
     @OneToOne
     private Ip ip;
     

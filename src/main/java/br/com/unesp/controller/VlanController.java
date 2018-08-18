@@ -13,7 +13,7 @@ import javax.inject.Named;
 @RequestScoped
 public class VlanController {
     @Inject
-    private VlanDao dao;
+    private VlanDao vlanDao;
     @Inject
     private FacesMessages message;
     private Vlan vlan = new Vlan();
@@ -22,12 +22,12 @@ public class VlanController {
     public VlanController() {
     }
 
-    public VlanDao getDao() {
-        return dao;
+    public VlanDao getVlanDao() {
+        return vlanDao;
     }
 
-    public void setDao(VlanDao dao) {
-        this.dao = dao;
+    public void setVlanDao(VlanDao vlanDao) {
+        this.vlanDao = vlanDao;
     }
 
     public Vlan getVlan() {
@@ -48,12 +48,12 @@ public class VlanController {
 
     public void salvar() {
         if (vlan.getId() == null) {
-            dao.salvar(this.vlan);
+            vlanDao.salvar(this.vlan);
             vlan = new Vlan();
             message.info("Cadastro realizado com sucesso!");
         } else {
             try {
-                dao.atualizar(this.vlan);
+                vlanDao.atualizar(this.vlan);
                 this.vlan = new Vlan();
                 message.info("Alterado com sucesso!");
             } catch (Exception ex) {
@@ -65,7 +65,7 @@ public class VlanController {
     public void deletar(ActionEvent evento) {
         vlan = (Vlan) evento.getComponent().getAttributes().get("vlanSelecionada");
         try {
-            dao.deletar(vlan);
+            vlanDao.deletar(vlan);
             message.info("Deletada com sucesso!");
         } catch (Exception ex) {
             message.error("Erro ao deletar vlan");

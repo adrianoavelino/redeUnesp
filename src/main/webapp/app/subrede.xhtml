@@ -28,7 +28,7 @@
                                  converter="vlanConverter"
                                  value="#{subredeController.subrede.vlan}">
                     <!--<f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />-->
-                    <f:selectItems value="#{vlanController.dao.listar()}"
+                    <f:selectItems value="#{vlanController.vlanDao.listar()}"
                                    var="vlan"
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
                                    itemValue="#{vlan}" />

@@ -10,6 +10,8 @@
 drop database redeUnesp;create database redeUnesp;use redeUnesp;
 mysqldump -u root -p redeUnesp --complete-insert > redeUnesp.sql
 grep INSERT redeUnesp.sql #pega todos insert do arquivo
+select concat(r.endereco, ".", i.enderecoIp) as teste from ip i inner join rede r on r.rede_id = i.rede_id; //resolve problema de atualizar rede
+select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer join usuario u on h.id_usuario = u.id limit 10; //remover bidirecional de ip
 
 -Host
     - verificar nome duplicado
@@ -44,3 +46,4 @@ grep INSERT redeUnesp.sql #pega todos insert do arquivo
     - corrigir Doctype para html5
     - alterar selectOneMenu para a versão primefaces
     - adicionar validação jsf
+    - remover relacionamento bidirecional da classe IP
