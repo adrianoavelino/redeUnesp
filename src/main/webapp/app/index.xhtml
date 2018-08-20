@@ -26,30 +26,35 @@
         </h:form>        
     </ui:define>
     <ui:define name="dados">
-        <p:dataTable value="#{vlanController.vlanDao.buscarVlanPorRede(1)}" var="vlan">
-            <p:column headerText="VLAN" style="width: 150px">
-                <h:outputText value="#{vlan.numero} - #{vlan.descricao}" />
-            </p:column>
-            <p:column headerText="IP" >
-                <p:dataTable value="#{ipController.ipDao.buscarIpsPorVlan(vlan.id)}" var="ip">
-                    <p:column headerText="IP" style="width: 100px">
-                        <h:outputText value="#{ip.enderecoIp}" />
+        <p:tabView value="#{redeController.dao.listar()}" var="rede">
+            <p:tab title="#{rede.endereco}.0">
+                <p:dataTable value="#{vlanController.vlanDao.buscarVlanPorRede(rede.id)}" var="vlan">
+                    <p:column headerText="VLAN" style="width: 150px">
+                        <h:outputText value="#{vlan.numero} - #{vlan.descricao}" />
                     </p:column>
-                    <p:column headerText="host">
-                        <h:outputText value="#{ip.host.nome}" />
+                    <p:column headerText="informações dos Hosts" >
+                        <p:dataTable value="#{ipController.ipDao.buscarIpsPorVlan(vlan.id)}" var="ip">
+                            <p:column headerText="IP" style="width: 100px">
+                                <h:outputText value="#{ip.enderecoIp}" />
+                            </p:column>
+                            <p:column headerText="host">
+                                <h:outputText value="#{ip.host.nome}" />
+                            </p:column>
+                            <p:column headerText="mac-address">
+                                <h:outputText value="#{ip.host.macAddres}" />
+                            </p:column>
+                            <p:column headerText="usuario">
+                                <h:outputText value="#{ip.host.usuario.nome}" />
+                            </p:column>
+                            <p:column headerText="matricula">
+                                <h:outputText value="#{ip.host.usuario.matricula}" />
+                            </p:column>
+                        </p:dataTable>
                     </p:column>
-                    <p:column headerText="mac-address">
-                        <h:outputText value="#{ip.host.macAddres}" />
-                    </p:column>
-                    <p:column headerText="usuario">
-                        <h:outputText value="#{ip.host.usuario.nome}" />
-                    </p:column>
-                    <p:column headerText="matricula">
-                        <h:outputText value="#{ip.host.usuario.matricula}" />
-                    </p:column>
-                </p:dataTable>
-            </p:column>
-        </p:dataTable>
+                </p:dataTable>                
+            </p:tab>
+        </p:tabView>
+
     </ui:define>
 </ui:composition>
 
