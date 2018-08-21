@@ -1,8 +1,6 @@
 package br.com.unesp.dao;
 
-import br.com.unesp.model.Ip;
 import br.com.unesp.model.Vlan;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,7 +26,7 @@ public class VlanDao {
     }
 
     public List<Vlan> listar() throws Exception {
-        Query query = this.em.createQuery("from vlan v");
+        Query query = this.em.createQuery("from vlan v join fetch v.grupoRede");
         List<Vlan> vlans = query.getResultList();
         return vlans;
     }
@@ -49,24 +47,28 @@ public class VlanDao {
         return this.em.find(Vlan.class, idRede);
     }
 
-    public Vlan buscarPorIp(Long id ) {
-        try {
-        String consulta = "select v from subrede s inner join s.ips i inner join s.vlan v where i.id = :id";
-            Query query = em.createQuery(consulta);
-            query.setParameter("id", id);
-            Vlan vlanProcurada = (Vlan) query.getResultList().get(0);
-            return vlanProcurada;
-        } catch (Exception e) {
-            System.out.println("Erro===========" + e);
-            return new Vlan();
+    public Vlan buscarPorIp(Long id) {
+
+        if (id != null) {
+
+            try {
+                String consulta = "select v from subrede s join fetch s.ips i join fetch s.vlan v where i.id = :id";
+                Query query = em.createQuery(consulta);
+                query.setParameter("id", id);
+                Vlan vlanProcurada = (Vlan) query.getResultList().get(0);
+                return vlanProcurada;
+            } catch (Exception e) {
+                System.out.println("Erro===========" + e);
+                return new Vlan();
+            }
         }
+        return new Vlan();
     }
-    
 
     public List<Vlan> buscarVlanPorRede(Integer idDaRede) {
         Query query = this.em.createQuery("select v from subrede s inner join s.vlan v where s.rede.id = :rede order by v.numero");
         query.setParameter("rede", idDaRede);
         List<Vlan> vlans = query.getResultList();
         return vlans;
-    }    
+    }
 }
