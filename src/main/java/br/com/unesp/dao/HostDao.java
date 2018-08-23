@@ -1,7 +1,6 @@
 package br.com.unesp.dao;
 
 import br.com.unesp.model.Host;
-import br.com.unesp.model.Ip;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,7 +9,7 @@ import javax.persistence.Query;
 
 @Stateless
 public class HostDao {
-    
+
     @PersistenceContext(unitName = "redeUnespPU")
     EntityManager em;
 
@@ -21,14 +20,47 @@ public class HostDao {
     public void setEm(EntityManager em) {
         this.em = em;
     }
-    
-    
-    public List<Host> listar() throws Exception {
-        Query query = this.em.createQuery("from host h");
-        List<Host> hosts = query.getResultList();
+
+    public List<Object[]> listar() throws Exception {
+
+        String sql = "select "
+                + "host.id_host, "
+                + "host.nome, "
+                + "host.macAddres, "
+                + "tipo_host.tipo, "
+                + "usuario.nome as nomeUsuario, "
+                + "vlan.descricao, "
+                + "ip.enderecoIp, "
+                + "tipo_host.id_tipo_host, "
+                + "usuario.id, "
+                + "ip.ip_id "
+                + "from "
+                    + "host "
+                + "inner join "
+                    + "tipo_host "
+                        + "on host.id_tipo_host = tipo_host.id_tipo_host "
+                + "left join "
+                    + "usuario "
+                        + "on host.id_usuario = usuario.id "
+                + "left join "
+                    + "ip "
+                        + "on host.ip_ip_id = ip.ip_id "
+                + "left join "
+                    + "subrede_ip "
+                        + "on ip.ip_id = subrede_ip.enderecoIp "
+                + "left join "
+                    + "subrede "
+                        + "on subrede.id_subrede = subrede_ip.id_subrede "
+                + "left join "
+                    + "vlan "
+                        + "on subrede.vlan_id = vlan.id_vlan "
+                + "order by "
+                    + "host.id_host";
+        Query query = this.em.createNativeQuery(sql);
+        List<Object[]> hosts = query.getResultList();
         return hosts;
     }
-    
+
     public void salvar(Host host) {
         this.em.persist(host);
     }
@@ -41,9 +73,9 @@ public class HostDao {
         hostModificado.setTipo(host.getTipo());
         hostModificado.setIp(host.getIp());
         em.merge(hostModificado);
-    }     
+    }
 
     public void deletar(Host host) throws Exception {
         this.em.remove(this.em.merge(host));
-    }    
+    }
 }

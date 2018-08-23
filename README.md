@@ -18,6 +18,7 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - verificar mac-address duplicado
     - colocar mascara para mac-address
     - validar mac-address
+    - renomear mac-addres para mac-address
 
 - Rede
     - verificar endereco duplicado

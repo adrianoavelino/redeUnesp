@@ -24,7 +24,7 @@ public class Host implements Serializable {
     private String nome;
     @NotBlank(message = "O campo Mac-address está vazio")
     private String macAddres;
-    @OneToOne(optional = true)
+    @OneToOne
     @JoinColumn(name = "id_tipo_host")
     @NotNull(message = "Selecione um tipo de host")
     private TipoHost tipo;

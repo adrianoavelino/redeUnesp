@@ -71,27 +71,27 @@
         <h:form id="host-tabela">
             <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 1000px">
                 <p:column headerText="Id">
-                    <h:outputText value="#{host.id}" />
+                    <h:outputText value="#{host[0]}" />
                 </p:column>
                 <p:column headerText="Nome">
-                    <h:outputText value="#{host.nome}" />
+                    <h:outputText value="#{host[1]}" />
                 </p:column>
-                <p:column headerText="Mac-addres">
-                    <h:outputText value="#{host.macAddres}" />
+                <p:column headerText="Mac-address">
+                    <h:outputText value="#{host[2]}" />
                 </p:column>
                 <p:column headerText="Tipo">
-                    <h:outputText value="#{host.tipo.tipo}" />
+                    <h:outputText value="#{host[3]}" />
                 </p:column>
-                <p:column headerText="Usuario">
-                    <h:outputText value="#{host.usuario.nome}" />
+                <p:column headerText="Usuário">
+                    <h:outputText value="#{host[4]}" />
                 </p:column>
                 <p:column headerText="Vlan">
-                    <h:outputText value="#{hostController.buscarDescricaoDaVlan(host.ip.id)}" />
+                    <h:outputText value="#{host[5]}" />
                 </p:column>
-                <p:column headerText="IP">
-                    <h:outputText value="#{host.ip.enderecoIp}" />
+                <p:column headerText="Ip">
+                    <h:outputText value="#{host[6]}" />
                 </p:column>
-                <p:column headerText="Opções">
+               <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 
                                      actionListener="#{hostController.deletar}"
                                      update=":host-tabela"

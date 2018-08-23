@@ -52,13 +52,13 @@ public class VlanDao {
         if (id != null) {
 
             try {
-                String consulta = "select v from subrede s join fetch s.ips i join fetch s.vlan v where i.id = :id";
+                String consulta = "select v from subrede s join s.ips i join s.vlan v where i.id = :id";
                 Query query = em.createQuery(consulta);
                 query.setParameter("id", id);
                 Vlan vlanProcurada = (Vlan) query.getResultList().get(0);
                 return vlanProcurada;
             } catch (Exception e) {
-                System.out.println("Erro===========" + e);
+                System.out.println("Erro ao selecionar vlan por Ip" + e);
                 return new Vlan();
             }
         }

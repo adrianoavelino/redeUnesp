@@ -6,12 +6,14 @@ import br.com.unesp.dao.VlanDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Host;
 import br.com.unesp.model.Ip;
+import br.com.unesp.model.TipoHost;
+import br.com.unesp.model.Usuario;
 import br.com.unesp.model.Vlan;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -30,7 +32,7 @@ public class HostController implements Serializable {
     @Inject
     private FacesMessages message;
     private Host host = new Host();
-    private Collection<Host> hosts;
+    private List<Object[]> hosts;
     private Vlan vlan;
     private Ip ip;
     private List<Ip> listaDeIps;
@@ -39,11 +41,6 @@ public class HostController implements Serializable {
     public HostController() {
         listaDeIps = new ArrayList<>();
         vlans = new ArrayList<>();
-    }
-
-    @PostConstruct
-    public void init() {
-        this.carregarVlans();
     }
 
     public HostDao getDao() {
@@ -70,7 +67,7 @@ public class HostController implements Serializable {
         this.host = host;
     }
 
-    public Collection<Host> getHosts() {
+    public List<Object[]> getHosts() {
         try {
             hosts = dao.listar();
         } catch (Exception ex) {
@@ -79,7 +76,7 @@ public class HostController implements Serializable {
         return hosts;
     }
 
-    public void setHosts(Collection<Host> hosts) {
+    public void setHosts(List<Object[]> hosts) {
         this.hosts = hosts;
     }
 
@@ -159,7 +156,20 @@ public class HostController implements Serializable {
     }
 
     public void deletar(ActionEvent evento) {
-        host = (Host) evento.getComponent().getAttributes().get("hostSelecionado");
+        Object[] hostSelecionado = (Object[]) evento.getComponent().getAttributes().get("hostSelecionado");
+
+        TipoHost tipo = new TipoHost();
+        tipo.setId((Integer) hostSelecionado[7]);
+        tipo.setTipo((String) hostSelecionado[3]);
+        Usuario usuario = new Usuario();
+        usuario.setId((Integer) hostSelecionado[8]);
+        usuario.setNome((String) hostSelecionado[4]);
+        
+        host.setId((Integer) hostSelecionado[0]);
+        host.setNome((String) hostSelecionado[1]);
+        host.setMacAddres((String) hostSelecionado[2]);
+        host.setTipo(tipo);
+        host.setUsuario(usuario);
         try {
             dao.deletar(host);
         } catch (Exception ex) {
@@ -168,10 +178,28 @@ public class HostController implements Serializable {
     }
 
     public void editar(ActionEvent evento) {
-        host = (Host) evento.getComponent().getAttributes().get("hostSelecionado");
-        if (host.getIp() != null) {
-            Long idDoIp = host.getIp().getId();
-            vlan = vlanDao.buscarPorIp(idDoIp);
+        Object[] hostSelecionado = (Object[]) evento.getComponent().getAttributes().get("hostSelecionado");
+
+        TipoHost tipo = new TipoHost();
+        tipo.setId((Integer) hostSelecionado[7]);
+        tipo.setTipo((String) hostSelecionado[3]);
+        Usuario usuario = new Usuario();
+        usuario.setId((Integer) hostSelecionado[8]);
+        usuario.setNome((String) hostSelecionado[4]);
+        
+        host.setId((Integer) hostSelecionado[0]);
+        host.setNome((String) hostSelecionado[1]);
+        host.setMacAddres((String) hostSelecionado[2]);
+        host.setTipo(tipo);
+        host.setUsuario(usuario);
+
+        if (hostSelecionado[9] != null) {
+            BigInteger idDoIp =  (BigInteger) hostSelecionado[9];
+            Ip ipLocal = new Ip();
+            ipLocal.setId(idDoIp.longValue());
+            ipLocal.setEnderecoIp((String) hostSelecionado[6]);
+            host.setIp(ipLocal);
+            vlan = vlanDao.buscarPorIp(ipLocal.getId());
             listaDeIps = ipDao.buscarIpsDaVlan(vlan.getId());
             listaDeIps.add(host.getIp());
         }
@@ -189,9 +217,5 @@ public class HostController implements Serializable {
             message.error("Erro ao selecionar os ips da vlan " + vlan);
             ex.printStackTrace();
         }
-    }
-
-    public String buscarDescricaoDaVlan(Long idDoIp) {
-        return vlanDao.buscarPorIp(idDoIp).getDescricao();
     }
 }
