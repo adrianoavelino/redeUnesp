@@ -38,6 +38,7 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - organizar tabela
     - otimizar eager das tabelas
     - remover métodos com parâmetros (getgateway ...)
+    - verificar bug na range de ips
 
 - Usuario
     - colocar mascara na matrícula

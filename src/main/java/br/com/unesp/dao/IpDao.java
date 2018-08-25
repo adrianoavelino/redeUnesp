@@ -22,9 +22,33 @@ public class IpDao {
     @Inject
     private SubredeDao subredeDao;
 
-    public List<Ip> listar() throws Exception {
-        Query query = this.em.createQuery("from ip i");
-        List<Ip> ips = query.getResultList();
+    public List<Object[]> listar(Integer idDaRede) throws Exception {
+        String sql = "select "
+                    + "i.enderecoIp, "
+                    + "h.nome, "
+                    + "h.macAddres, "
+                    + "u.nome as nomeUsuario, "
+                    + "u.matricula, "
+                    + "v.numero, "
+                    + "v.descricao  "
+                + "from "
+                    + "ip i "
+                + "left outer join host h "
+                    + "on  h.ip_ip_id = i.ip_id "
+                + "left outer join usuario u "
+                    + "on h.id_usuario = u.id  "
+                + "left outer join subrede_ip si "
+                    + "on si.enderecoIp = i.ip_id "
+                + "left outer join subrede s "
+                    + "on s.id_subrede = si.id_subrede "
+                + "left outer join vlan v "
+                    + "on v.id_vlan = s.vlan_id "
+                + "where "
+                    + "i.rede_id = :rede "
+                + "order by i.ip_id";
+        Query query = this.em.createNativeQuery(sql);
+        query.setParameter("rede", idDaRede);
+        List<Object[]> ips = query.getResultList();
         return ips;
     }
 
@@ -183,7 +207,7 @@ public class IpDao {
         }
         return ipsDaSubrede;
     }
-    
+
 //    buscar vlan por ip
 //    select * from subrede s inner join subrede_ip si on s.id_subrede = si.id_subrede where si.enderecoIp = 1;
 }
