@@ -28,7 +28,18 @@ public class SubredeDao {
     }
 
     public List<Subrede> listar() throws Exception {
-        Query query = this.em.createQuery("from subrede s");
+        String sql = "select "
+                        + "distinct s "
+                    + "from "
+                        + "subrede s "
+                    + "join fetch s.ips si "
+                    + "join fetch si.rede r "
+                    + "join fetch s.vlan v "
+                    + "join fetch v.grupoRede g "
+                    + "left join fetch si.host h "
+                    + "left join fetch h.usuario u "
+                    + "left join fetch h.tipo t order by v.numero ";
+        Query query = this.em.createQuery(sql);
         List<Subrede> vlans = query.getResultList();
         return vlans;
     }

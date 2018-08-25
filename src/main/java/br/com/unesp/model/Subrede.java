@@ -37,7 +37,7 @@ public class Subrede implements Serializable {
     @JoinColumn(name = "vlan_id")
     private Vlan vlan;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "subrede_ip",
             joinColumns = @JoinColumn(name = "id_subrede"),
             inverseJoinColumns = @JoinColumn(name = "enderecoIp"))
