@@ -14,9 +14,7 @@ select concat(r.endereco, ".", i.enderecoIp) as teste from ip i inner join rede 
 select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer join usuario u on h.id_usuario = u.id limit 10; //remover bidirecional de ip
 
 -Host
-    - verificar nome duplicado
-    - verificar mac-address duplicado
-    - colocar mascara para mac-address
+    - colocar mascara para mac-address?
     - validar mac-address
     - renomear mac-addres para mac-address
 

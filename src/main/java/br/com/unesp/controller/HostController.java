@@ -12,7 +12,6 @@ import br.com.unesp.model.Vlan;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
@@ -115,23 +114,27 @@ public class HostController implements Serializable {
     public void salvar() {
         if (host.getId() == null) {
             if (this.validate()) {
-                dao.salvar(this.host);
-                message.info("Salvo com sucesso!");
-                host = new Host();
-                vlan = null;
-                this.listaDeIps = null;
+                if (this.validar()) {
+                    dao.salvar(this.host);
+                    message.info("Salvo com sucesso!");
+                    host = new Host();
+                    vlan = null;
+                    this.listaDeIps = null;
+                }
             }
         } else {
             if (this.validate()) {
-                try {
-                    dao.atualizar(this.host);
-                    message.info("Atualizado com sucesso!");
-                    host = new Host();
-                    vlan = null;
-                    this.carregarVlans();
-                    this.listaDeIps = null;
-                } catch (Exception ex) {
-                    message.error("Erro ao atualizar host");
+                if (this.validar()) {
+                    try {
+                        dao.atualizar(this.host);
+                        message.info("Atualizado com sucesso!");
+                        host = new Host();
+                        vlan = null;
+                        this.carregarVlans();
+                        this.listaDeIps = null;
+                    } catch (Exception ex) {
+                        message.error("Erro ao atualizar host");
+                    }
                 }
             }
         }
@@ -164,7 +167,7 @@ public class HostController implements Serializable {
         Usuario usuario = new Usuario();
         usuario.setId((Integer) hostSelecionado[8]);
         usuario.setNome((String) hostSelecionado[4]);
-        
+
         host.setId((Integer) hostSelecionado[0]);
         host.setNome((String) hostSelecionado[1]);
         host.setMacAddres((String) hostSelecionado[2]);
@@ -186,7 +189,7 @@ public class HostController implements Serializable {
         Usuario usuario = new Usuario();
         usuario.setId((Integer) hostSelecionado[8]);
         usuario.setNome((String) hostSelecionado[4]);
-        
+
         host.setId((Integer) hostSelecionado[0]);
         host.setNome((String) hostSelecionado[1]);
         host.setMacAddres((String) hostSelecionado[2]);
@@ -194,7 +197,7 @@ public class HostController implements Serializable {
         host.setUsuario(usuario);
 
         if (hostSelecionado[9] != null) {
-            BigInteger idDoIp =  (BigInteger) hostSelecionado[9];
+            BigInteger idDoIp = (BigInteger) hostSelecionado[9];
             Ip ipLocal = new Ip();
             ipLocal.setId(idDoIp.longValue());
             ipLocal.setEnderecoIp((String) hostSelecionado[6]);
@@ -218,4 +221,18 @@ public class HostController implements Serializable {
             ex.printStackTrace();
         }
     }
+
+    public boolean validar() {
+        boolean temErro = true;
+        if (dao.isNomeDuplicado(host)) {
+            message.error("O nome já está cadastrado");
+            temErro = false;
+        }
+        if (dao.isMacAddressDuplicado(host)) {
+            message.error("Mac-address já está cadastrado");
+            temErro = false;
+        }
+        return temErro;
+    }
+
 }

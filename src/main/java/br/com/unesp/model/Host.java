@@ -93,6 +93,10 @@ public class Host implements Serializable {
         this.ip = ip;
     }
 
+    public boolean isDiferente(Host host) {
+        return this.id != host.getId();
+    }    
+    
     @Override
     public int hashCode() {
         int hash = 5;

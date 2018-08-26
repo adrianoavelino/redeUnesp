@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class HostDao {
@@ -78,4 +79,28 @@ public class HostDao {
     public void deletar(Host host) throws Exception {
         this.em.remove(this.em.merge(host));
     }
+    
+    public boolean isNomeDuplicado(Host host) {
+        String consulta = "select h from host h where h.nome = :nome";
+        TypedQuery<Host> query = this.em.createQuery(consulta, Host.class);
+        query.setParameter("nome", host.getNome());
+
+        List<Host> hosts = query.getResultList();
+        if (!hosts.isEmpty() && hosts.get(0).isDiferente(host)) {
+            return true;
+        }
+        return false;
+    }    
+    
+    public boolean isMacAddressDuplicado(Host host) {
+        String consulta = "select h from host h where h.macAddres = :macAddres";
+        TypedQuery<Host> query = this.em.createQuery(consulta, Host.class);
+        query.setParameter("macAddres", host.getMacAddres());
+
+        List<Host> hosts = query.getResultList();
+        if (!hosts.isEmpty() && hosts.get(0).isDiferente(host)) {
+            return true;
+        }
+        return false;
+    }    
 }
