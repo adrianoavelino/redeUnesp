@@ -63,7 +63,10 @@ public class Usuario implements Serializable {
         this.listaDeHosts = listaDeHosts;
     }
     
-    
+        
+    public boolean isDiferente(Usuario usuario) {
+        return this.id != usuario.getId();
+    }
 
     @Override
     public int hashCode() {

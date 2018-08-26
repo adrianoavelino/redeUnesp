@@ -41,7 +41,7 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - verificar bug na range de ips
 
 - Usuario
-    - colocar mascara na matrícula
+    - colocar mascara na matrícula?
 
 - Geral
     - remover css inline (style)
@@ -49,3 +49,4 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - alterar selectOneMenu para a versão primefaces
     - adicionar validação jsf
     - remover relacionamento bidirecional da classe IP
+    - melhorar/criar interface de  validação (SOLID)

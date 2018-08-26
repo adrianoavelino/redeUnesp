@@ -6,10 +6,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class UsuarioDao {
-    
+
     @PersistenceContext(unitName = "redeUnespPU")
     private EntityManager em;
 
@@ -20,8 +21,8 @@ public class UsuarioDao {
     public void setEm(EntityManager em) {
         this.em = em;
     }
-    
-    public void salvar(Usuario usuario){
+
+    public void salvar(Usuario usuario) {
         em.persist(usuario);
     }
 
@@ -44,6 +45,29 @@ public class UsuarioDao {
 
     public Usuario buscarPorId(Integer idDoUsuario) {
         return this.em.find(Usuario.class, idDoUsuario);
-    }    
-    
+    }
+
+    public boolean isNomeDuplicado(Usuario usuario) {
+        String consulta = "select u from usuario u where nome = :nome";
+        TypedQuery<Usuario> query = this.em.createQuery(consulta, Usuario.class);
+        query.setParameter("nome", usuario.getNome());
+
+        List<Usuario> usuarios = query.getResultList();
+        if (!usuarios.isEmpty() && usuarios.get(0).isDiferente(usuario)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isMatriculaDuplicada(Usuario usuario) {
+        String consulta = "select u from usuario u where matricula = :matricula";
+        TypedQuery<Usuario> query = this.em.createQuery(consulta, Usuario.class);
+        query.setParameter("matricula", usuario.getMatricula());
+        List<Usuario> usuarios = query.getResultList();
+        if (!usuarios.isEmpty() && usuarios.get(0).isDiferente(usuario)) {
+            return true;
+        }
+        return false;
+    }
+
 }

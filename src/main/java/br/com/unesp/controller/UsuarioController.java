@@ -12,6 +12,7 @@ import javax.inject.Named;
 @Named(value = "usuarioController")
 @RequestScoped
 public class UsuarioController {
+
     @Inject
     private UsuarioDao dao;
     @Inject
@@ -39,20 +40,25 @@ public class UsuarioController {
 
     public void salvar() {
         if (usuario.getId() == null) {
-            dao.salvar(this.usuario);
-            usuario = new Usuario();
-            message.info("Cadastro realizado com sucesso!");
-        } else {
-            try {
-                dao.atualizar(this.usuario);
-                this.usuario = new Usuario();
-                message.info("Alterado com sucesso!");
-            } catch (Exception ex) {
-                message.error("Erro ao alterar Usuario");
+            if (this.validar()) {
+                dao.salvar(this.usuario);
+                usuario = new Usuario();
+                message.info("Cadastro realizado com sucesso!");
             }
+        } else {
+            if (this.validar()) {
+                try {
+                    dao.atualizar(this.usuario);
+                    this.usuario = new Usuario();
+                    message.info("Alterado com sucesso!");
+                } catch (Exception ex) {
+                    message.error("Erro ao alterar Usuario");
+                }
+            }
+
         }
     }
-    
+
     public void deletar(ActionEvent evento) {
         usuario = (Usuario) evento.getComponent().getAttributes().get("usuarioSelecionado");
         try {
@@ -66,6 +72,19 @@ public class UsuarioController {
 
     public void editar(ActionEvent evento) {
         usuario = (Usuario) evento.getComponent().getAttributes().get("usuarioSelecionado");
-    }    
-    
+    }
+
+    public boolean validar() {
+        boolean temErro = true;
+        if (dao.isNomeDuplicado(usuario)) {
+            message.error("O nome já está cadastrado");
+            temErro = false;
+        }
+        if (dao.isMatriculaDuplicada(usuario)) {
+            message.error("Matrícula já está cadastrada");
+            temErro = false;
+        }
+        return temErro;
+    }
+
 }
