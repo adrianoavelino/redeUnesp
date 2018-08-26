@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class VlanDao {
@@ -71,4 +72,29 @@ public class VlanDao {
         List<Vlan> vlans = query.getResultList();
         return vlans;
     }
+
+    public boolean isNumeroDuplicado(Vlan vlan) {
+        String consulta = "select v from vlan v where v.numero = :numero and v.grupoRede.id = :grupoRede ";
+        TypedQuery<Vlan> query = this.em.createQuery(consulta, Vlan.class);
+        query.setParameter("numero", vlan.getNumero());
+        query.setParameter("grupoRede", vlan.getGrupoRede().getId());
+        List<Vlan> vlans = query.getResultList();
+        if (!vlans.isEmpty() && vlans.get(0).isDiferente(vlan)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isDescricaoDuplicada(Vlan vlan) {
+        String consulta = "select v from vlan v where v.descricao = :descricao and v.grupoRede.id = :grupoRede ";
+        TypedQuery<Vlan> query = this.em.createQuery(consulta, Vlan.class);
+        query.setParameter("descricao", vlan.getDescricao());
+        query.setParameter("grupoRede", vlan.getGrupoRede().getId());
+        List<Vlan> vlans = query.getResultList();
+        if (!vlans.isEmpty() && vlans.get(0).isDiferente(vlan)) {
+            return true;
+        }
+        return false;
+    }
+
 }

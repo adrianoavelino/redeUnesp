@@ -12,6 +12,7 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class VlanController {
+
     @Inject
     private VlanDao vlanDao;
     @Inject
@@ -48,17 +49,22 @@ public class VlanController {
 
     public void salvar() {
         if (vlan.getId() == null) {
-            vlanDao.salvar(this.vlan);
-            vlan = new Vlan();
-            message.info("Cadastro realizado com sucesso!");
-        } else {
-            try {
-                vlanDao.atualizar(this.vlan);
-                this.vlan = new Vlan();
-                message.info("Alterado com sucesso!");
-            } catch (Exception ex) {
-                message.error("Erro ao alterar Vlan");
+            if (this.validar()) {
+                vlanDao.salvar(this.vlan);
+                vlan = new Vlan();
+                message.info("Cadastro realizado com sucesso!");
             }
+        } else {
+            if (this.validar()) {
+                try {
+                    vlanDao.atualizar(this.vlan);
+                    this.vlan = new Vlan();
+                    message.info("Alterado com sucesso!");
+                } catch (Exception ex) {
+                    message.error("Erro ao alterar Vlan");
+                }
+            }
+
         }
     }
 
@@ -75,4 +81,19 @@ public class VlanController {
     public void editar(ActionEvent evento) {
         vlan = (Vlan) evento.getComponent().getAttributes().get("vlanSelecionada");
     }
+
+    public boolean validar() {
+        boolean temErro = true;
+        if (vlanDao.isNumeroDuplicado(vlan)) {
+            message.error("O número da Vlan já está cadastrado na rede " + vlan.getGrupoRede().getNome());
+            temErro = false;
+        }
+
+        if (vlanDao.isDescricaoDuplicada(vlan)) {
+            message.error("A descrição já está sendo usada na rede " + vlan.getGrupoRede().getNome());
+            temErro = false;
+        }
+        return temErro;
+    }
+
 }
