@@ -113,28 +113,24 @@ public class HostController implements Serializable {
 
     public void salvar() {
         if (host.getId() == null) {
-            if (this.validate()) {
-                if (this.validar()) {
-                    dao.salvar(this.host);
-                    message.info("Salvo com sucesso!");
-                    host = new Host();
-                    vlan = null;
-                    this.listaDeIps = null;
-                }
+            if (this.validar()) {
+                dao.salvar(this.host);
+                message.info("Salvo com sucesso!");
+                host = new Host();
+                vlan = null;
+                this.listaDeIps = null;
             }
         } else {
-            if (this.validate()) {
-                if (this.validar()) {
-                    try {
-                        dao.atualizar(this.host);
-                        message.info("Atualizado com sucesso!");
-                        host = new Host();
-                        vlan = null;
-                        this.carregarVlans();
-                        this.listaDeIps = null;
-                    } catch (Exception ex) {
-                        message.error("Erro ao atualizar host");
-                    }
+            if (this.validar()) {
+                try {
+                    dao.atualizar(this.host);
+                    message.info("Atualizado com sucesso!");
+                    host = new Host();
+                    vlan = null;
+                    this.carregarVlans();
+                    this.listaDeIps = null;
+                } catch (Exception ex) {
+                    message.error("Erro ao atualizar host");
                 }
             }
         }
@@ -146,16 +142,6 @@ public class HostController implements Serializable {
         } catch (Exception ex) {
             message.error("Erro ao listar vlans");
         }
-    }
-
-    private boolean validate() {
-        if (vlan != null && host.getIp() == null) {
-            if (ip == null) {
-                message.error("Selecione um IP");
-                return false;
-            }
-        }
-        return true;
     }
 
     public void deletar(ActionEvent evento) {
@@ -232,7 +218,22 @@ public class HostController implements Serializable {
             message.error("Mac-address já está cadastrado");
             temErro = false;
         }
+
+        if (!this.validateIp()) {
+            message.error("Selecione um IP");
+            temErro = false;
+        }
+
         return temErro;
+    }
+
+    private boolean validateIp() {
+        if (vlan != null && host.getIp() == null) {
+            if (ip == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
