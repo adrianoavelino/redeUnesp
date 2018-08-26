@@ -53,6 +53,10 @@ public class Rede implements Serializable {
         return hash;
     }
 
+    public boolean isDiferente(Rede rede) {
+        return this.id != rede.getId();
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

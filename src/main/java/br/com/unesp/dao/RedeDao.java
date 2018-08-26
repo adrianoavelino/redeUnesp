@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class RedeDao {
@@ -39,5 +40,17 @@ public class RedeDao {
 
     public void deletar(Rede rede) throws Exception {
         this.em.remove(this.em.merge(rede));
+    }
+
+    public boolean isEnderecoDuplicado(Rede rede) {
+        String consulta = "select r from rede r where endereco = :endereco";
+        TypedQuery<Rede> query = this.em.createQuery(consulta, Rede.class);
+        query.setParameter("endereco", rede.getEndereco());
+
+        List<Rede> redes = query.getResultList();
+        if (!redes.isEmpty() && redes.get(0).isDiferente(rede)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -21,7 +21,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - renomear mac-addres para mac-address
 
 - Rede
-    - verificar endereco duplicado
     - adicionar mascara
     - verificar ip válido
     - atualizar os ips ao modificar a rede.Obs: o ip pega o endereço de rede para formar a rede) ou remover o editar ou guardar somente o ultimo octeto

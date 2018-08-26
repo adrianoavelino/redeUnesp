@@ -6,8 +6,6 @@ import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Ip;
 import br.com.unesp.model.Rede;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -56,28 +54,32 @@ public class RedeController {
     public void salvar() {
 
         if (rede.getId() == null) {
-            List<Ip> ips = Ip.criarListaEnderecoIp(rede);
-            try {
-                dao.salvar(rede);
-                this.rede = new Rede();
-                message.info("Rede salva com sucesso!");
-            } catch (Exception ex) {
-                message.error("Erro ao salvar Rede");
-            }
-            for (Ip ip : ips) {
+            if (this.validar()) {
+                List<Ip> ips = Ip.criarListaEnderecoIp(rede);
                 try {
-                    ipDao.salvar(ip);
+                    dao.salvar(rede);
+                    this.rede = new Rede();
+                    message.info("Rede salva com sucesso!");
                 } catch (Exception ex) {
-                    message.error("Erro ao salvar lista de ip");
+                    message.error("Erro ao salvar Rede");
+                }
+                for (Ip ip : ips) {
+                    try {
+                        ipDao.salvar(ip);
+                    } catch (Exception ex) {
+                        message.error("Erro ao salvar lista de ip");
+                    }
                 }
             }
         } else {
-            try {
-                dao.atualizar(rede);
-                rede = new Rede();
-                message.info("Alterado com sucesso!");
-            } catch (Exception ex) {
-                message.error("Erro ao alterar rede");
+            if (this.validar()) {
+                try {
+                    dao.atualizar(rede);
+                    rede = new Rede();
+                    message.info("Alterado com sucesso!");
+                } catch (Exception ex) {
+                    message.error("Erro ao alterar rede");
+                }
             }
         }
     }
@@ -105,6 +107,15 @@ public class RedeController {
     public void editar(ActionEvent evento) {
         rede = (Rede) evento.getComponent().getAttributes().get("redeSelecionada");
         System.out.println("Editar");
+    }
+
+    public boolean validar() {
+        boolean temErro = true;
+        if (dao.isEnderecoDuplicado(rede)) {
+            message.error("A rede já está cadastrado");
+            temErro = false;
+        }
+        return temErro;
     }
 
 }
