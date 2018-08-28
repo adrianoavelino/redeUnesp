@@ -26,7 +26,7 @@ public class IpDao {
         String sql = "select "
                     + "i.enderecoIp, "
                     + "h.nome, "
-                    + "h.macAddres, "
+                    + "h.macAddress, "
                     + "u.nome as nomeUsuario, "
                     + "u.matricula, "
                     + "v.numero, "

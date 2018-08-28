@@ -23,7 +23,7 @@ public class Host implements Serializable {
     @NotBlank(message = "O campo nome está vazio")
     private String nome;
     @NotBlank(message = "O campo Mac-address está vazio")
-    private String macAddres;
+    private String macAddress;
     @OneToOne
     @JoinColumn(name = "id_tipo_host")
     @NotNull(message = "Selecione um tipo de host")
@@ -39,9 +39,9 @@ public class Host implements Serializable {
     public Host() {
     }
 
-    public Host(String nome, String macAddres, TipoHost tipo) {
+    public Host(String nome, String macAddress, TipoHost tipo) {
         this.nome = nome;
-        this.macAddres = macAddres;
+        this.macAddress = macAddress;
         this.tipo = tipo;
     }
 
@@ -61,12 +61,12 @@ public class Host implements Serializable {
         this.nome = nome;
     }
 
-    public String getMacAddres() {
-        return macAddres;
+    public String getMacAddress() {
+        return macAddress;
     }
 
-    public void setMacAddres(String macAddres) {
-        this.macAddres = macAddres;
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
     }
 
     public TipoHost getTipo() {
@@ -124,7 +124,7 @@ public class Host implements Serializable {
 
     @Override
     public String toString() {
-        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddres=" + macAddres + ", tipo=" + tipo + ", ip=" + ip + ", usuario=" + usuario + '}';
+        return "Host{" + "id=" + id + ", nome=" + nome + ", macAddress=" + macAddress + ", tipo=" + tipo + ", ip=" + ip + ", usuario=" + usuario + '}';
     }
 
 }

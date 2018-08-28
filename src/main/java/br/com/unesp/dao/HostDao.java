@@ -27,7 +27,7 @@ public class HostDao {
         String sql = "select "
                 + "host.id_host, "
                 + "host.nome, "
-                + "host.macAddres, "
+                + "host.macAddress, "
                 + "tipo_host.tipo, "
                 + "usuario.nome as nomeUsuario, "
                 + "vlan.descricao, "
@@ -70,7 +70,7 @@ public class HostDao {
         Host hostModificado = em.find(Host.class, host.getId());
         hostModificado.setNome(host.getNome());
         hostModificado.setUsuario(host.getUsuario());
-        hostModificado.setMacAddres(host.getMacAddres());
+        hostModificado.setMacAddress(host.getMacAddress());
         hostModificado.setTipo(host.getTipo());
         hostModificado.setIp(host.getIp());
         em.merge(hostModificado);
@@ -93,9 +93,9 @@ public class HostDao {
     }    
     
     public boolean isMacAddressDuplicado(Host host) {
-        String consulta = "select h from host h where h.macAddres = :macAddres";
+        String consulta = "select h from host h where h.macAddress = :macAddress";
         TypedQuery<Host> query = this.em.createQuery(consulta, Host.class);
-        query.setParameter("macAddres", host.getMacAddres());
+        query.setParameter("macAddress", host.getMacAddress());
 
         List<Host> hosts = query.getResultList();
         if (!hosts.isEmpty() && hosts.get(0).isDiferente(host)) {

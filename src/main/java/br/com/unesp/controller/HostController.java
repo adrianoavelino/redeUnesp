@@ -156,7 +156,7 @@ public class HostController implements Serializable {
 
         host.setId((Integer) hostSelecionado[0]);
         host.setNome((String) hostSelecionado[1]);
-        host.setMacAddres((String) hostSelecionado[2]);
+        host.setMacAddress((String) hostSelecionado[2]);
         host.setTipo(tipo);
         host.setUsuario(usuario);
         try {
@@ -178,7 +178,7 @@ public class HostController implements Serializable {
 
         host.setId((Integer) hostSelecionado[0]);
         host.setNome((String) hostSelecionado[1]);
-        host.setMacAddres((String) hostSelecionado[2]);
+        host.setMacAddress((String) hostSelecionado[2]);
         host.setTipo(tipo);
         host.setUsuario(usuario);
 
