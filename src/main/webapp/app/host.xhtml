@@ -56,7 +56,7 @@
                     <f:selectItem itemLabel="Selecione um IP" noSelectionOption="true" />
                     <f:selectItems value="#{hostController.listaDeIps}"
                                    var="ip"
-                                   itemLabel="#{ip.enderecoIp}"
+                                   itemLabel="#{ip.rede.endereco}.#{ip.enderecoIp}"
                                    itemValue="#{ip}" />
                 </h:selectOneMenu>  
 

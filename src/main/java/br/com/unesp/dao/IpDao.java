@@ -24,13 +24,13 @@ public class IpDao {
 
     public List<Object[]> listar(Integer idDaRede) throws Exception {
         String sql = "select "
-                    + "i.enderecoIp, "
-                    + "h.nome, "
-                    + "h.macAddress, "
-                    + "u.nome as nomeUsuario, "
-                    + "u.matricula, "
-                    + "v.numero, "
-                    + "v.descricao  "
+                        + "concat(r.endereco, '.',i.enderecoIp), "
+                        + "h.nome, "
+                        + "h.macAddress, "
+                        + "u.nome as nomeUsuario, "
+                        + "u.matricula, "
+                        + "v.numero, "
+                        + "v.descricao  "
                 + "from "
                     + "ip i "
                 + "left outer join host h "
@@ -43,6 +43,8 @@ public class IpDao {
                     + "on s.id_subrede = si.id_subrede "
                 + "left outer join vlan v "
                     + "on v.id_vlan = s.vlan_id "
+                + "left outer join rede r "
+                    + "on r.rede_id = i.rede_id "
                 + "where "
                     + "i.rede_id = :rede "
                 + "order by i.ip_id";
@@ -68,23 +70,23 @@ public class IpDao {
     }
 
     public List<Ip> buscarIpsSemVlan(Integer idDaRede) throws Exception {
-        List<String> ipsSemSubrede = this.buscarIpsSubrede();
+        List<String> ipsSemSubrede = this.buscarIpsSubrede(idDaRede);
         String consulta;
-        List<Ip> rede;
-        if (ipsSemSubrede.isEmpty()) {
-            consulta = "select i from ip i inner join i.rede r where r.id = :rede";
-            TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
-            query.setParameter("rede", idDaRede);
-            rede = query.getResultList();
-        } else {
-            consulta = "select i from ip i inner join i.rede r where i.enderecoIp not in :ipsSemSubrede and r.id = :rede";
-            TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
-            query.setParameter("ipsSemSubrede", ipsSemSubrede);
-            query.setParameter("rede", idDaRede);
-            rede = query.getResultList();
-        }
+        List<Ip> ips;
         try {
-            return rede;
+            if (ipsSemSubrede.isEmpty()) {
+                consulta = "select i from ip i inner join i.rede r where r.id = :rede";
+                TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+                query.setParameter("rede", idDaRede);
+                ips = query.getResultList();
+            } else {
+                consulta = "select i from ip i inner join i.rede r where i.enderecoIp not in :ipsSemSubrede and r.id = :rede";
+                TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
+                query.setParameter("ipsSemSubrede", ipsSemSubrede);
+                query.setParameter("rede", idDaRede);
+                ips = query.getResultList();
+            }
+            return ips;
         } catch (Exception e) {
             System.out.println("Erro ao selecionar ips sem vlan" + e);
             return Collections.emptyList();
@@ -96,7 +98,7 @@ public class IpDao {
                 + "where i.enderecoIp not in :ipsSemSubrede "
                 + " and r.id = :rede ";
         try {
-            List<String> ipsSemSubrede = this.buscarIpsSubrede();
+            List<String> ipsSemSubrede = this.buscarIpsSubrede(idDaRede);
             TypedQuery<Ip> query = em.createQuery(consulta, Ip.class);
             query.setParameter("ipsSemSubrede", ipsSemSubrede);
             query.setParameter("rede", idDaRede);
@@ -108,11 +110,12 @@ public class IpDao {
         }
     }
 
-    public List<String> buscarIpsSubrede() throws Exception {
+    public List<String> buscarIpsSubrede(Integer idDaRede) throws Exception {
         String consulta = "select ip.enderecoIp from subrede_ip "
-                + " inner join ip on subrede_ip.enderecoIp = ip.ip_id";
+                + " inner join ip on subrede_ip.enderecoIp = ip.ip_id inner join rede on rede.rede_id = ip.rede_id where rede.rede_id = :rede";
         try {
             Query query = this.em.createNativeQuery(consulta);
+            query.setParameter("rede", idDaRede);
             List<String> ipsDaSubrede = query.getResultList();
             return ipsDaSubrede;
 
@@ -207,7 +210,4 @@ public class IpDao {
         }
         return ipsDaSubrede;
     }
-
-//    buscar vlan por ip
-//    select * from subrede s inner join subrede_ip si on s.id_subrede = si.id_subrede where si.enderecoIp = 1;
 }

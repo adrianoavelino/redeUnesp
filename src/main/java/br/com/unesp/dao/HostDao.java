@@ -31,7 +31,7 @@ public class HostDao {
                 + "tipo_host.tipo, "
                 + "usuario.nome as nomeUsuario, "
                 + "vlan.descricao, "
-                + "ip.enderecoIp, "
+                + "concat(rede.endereco, '.', ip.enderecoIp), "
                 + "tipo_host.id_tipo_host, "
                 + "usuario.id, "
                 + "ip.ip_id "
@@ -55,6 +55,9 @@ public class HostDao {
                 + "left join "
                     + "vlan "
                         + "on subrede.vlan_id = vlan.id_vlan "
+                + "left join "
+                + "rede "
+                + "on rede.rede_id = ip.rede_id "
                 + "order by "
                     + "host.id_host";
         Query query = this.em.createNativeQuery(sql);

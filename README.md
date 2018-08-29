@@ -16,12 +16,10 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 -Host
     - colocar mascara para mac-address?
     - validar mac-address
-    - renomear mac-addres para mac-address
 
 - Rede
     - adicionar mascara
     - verificar ip válido
-    - atualizar os ips ao modificar a rede.Obs: o ip pega o endereço de rede para formar a rede) ou remover o editar ou guardar somente o ultimo octeto
     - corrigir bug ao deletar rede. Obs: o deletar prenche o campo endereço da rede
 
 - Vlan

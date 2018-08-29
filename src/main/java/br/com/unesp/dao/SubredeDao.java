@@ -38,7 +38,7 @@ public class SubredeDao {
                     + "join fetch v.grupoRede g "
                     + "left join fetch si.host h "
                     + "left join fetch h.usuario u "
-                    + "left join fetch h.tipo t order by v.numero ";
+                    + "left join fetch h.tipo t ";
         Query query = this.em.createQuery(sql);
         List<Subrede> vlans = query.getResultList();
         return vlans;

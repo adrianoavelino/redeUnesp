@@ -58,6 +58,7 @@ public class SubredeController {
         List<Ip> ipsDaSubrede = this.getIpsSubrede();
         int quantidadeDeIpsdaSubrede = getQuantidadeDeIpsDaSubrede(ipsDaSubrede);
 
+//        message.info(""+ ipdao.buscarIpsSubrede(this.subrede.getRede().getId()));
         if (this.quantidadeDeHosts > quantidadeDeIpsdaSubrede) {
             message.error("Não existem ips suficientes na rede. Nessa rede existem somente " + this.getIpsLivres().size() + " ips livres");
         } else {
@@ -84,7 +85,7 @@ public class SubredeController {
             return Collections.emptyList();
         }
     }
-    
+
     public List<Ip> getIpsSubrede() {
         try {
             return this.getIpsLivres().subList(0, this.quantidadeDeHosts);
@@ -98,21 +99,24 @@ public class SubredeController {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(listaEnderecoIp.size() - 1).getEnderecoIp();
+        Ip ip = listaEnderecoIp.get(listaEnderecoIp.size() - 1);
+        return ip.getRede().getEndereco() + "." + ip.getEnderecoIp();
     }
 
     public String getEnderecoRede(List<Ip> listaEnderecoIp) {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(0).getEnderecoIp();
+        Ip ip = listaEnderecoIp.get(0);
+        return ip.getRede().getEndereco() + "." + ip.getEnderecoIp();
     }
 
     public String getEnderecoGateway(List<Ip> listaEnderecoIp) {
         if (listaEnderecoIp.isEmpty()) {
             return "";
         }
-        return listaEnderecoIp.get(listaEnderecoIp.size() - 2).getEnderecoIp();
+        Ip ip = listaEnderecoIp.get(listaEnderecoIp.size() - 2);
+        return ip.getRede().getEndereco() + "." + ip.getEnderecoIp();
     }
 
     private String getEnderecoGateway(Set<String> listaEnderecoIp) {

@@ -104,7 +104,7 @@ public class Ip implements Serializable {
         Ip ip;
         String enderecoIp;
         for (int i = 0; i < 256; i++) {
-            enderecoIp = rede.getEndereco() + "." + i;
+            enderecoIp = "" + i;
             ip = new Ip(enderecoIp, rede);
             ips.add(ip);
         }
