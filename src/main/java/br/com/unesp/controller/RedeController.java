@@ -102,6 +102,7 @@ public class RedeController {
         } catch (Exception ex) {
             message.error("Erro ao deletar rede");
         }
+        rede = new Rede();
     }
 
     public void editar(ActionEvent evento) {
