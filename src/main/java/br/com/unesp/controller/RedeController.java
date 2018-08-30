@@ -2,6 +2,7 @@ package br.com.unesp.controller;
 
 import br.com.unesp.dao.IpDao;
 import br.com.unesp.dao.RedeDao;
+import br.com.unesp.dao.SubredeDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Ip;
 import br.com.unesp.model.Rede;
@@ -19,6 +20,8 @@ public class RedeController {
     private RedeDao dao;
     @Inject
     private IpDao ipDao;
+    @Inject
+    private SubredeDao subredeDao;
     private Rede rede = new Rede();
     @Inject
     private FacesMessages message;
@@ -86,6 +89,11 @@ public class RedeController {
 
     public void deletar(ActionEvent evento) {
         rede = (Rede) evento.getComponent().getAttributes().get("redeSelecionada");
+        if (subredeDao.buscarSubredesPorRede(rede).size() > 0) {
+            message.error("Para deletar essa rede você deve deletar todas as subredes da rede " + this.rede.getEndereco());
+            rede = new Rede();
+            return;
+        }
         List<Ip> ips = ipDao.buscarIpsPorRede(rede.getId());
 
         for (Ip ip : ips) {
@@ -98,7 +106,7 @@ public class RedeController {
 
         try {
             dao.deletar(rede);
-            message.info("Rede excluida com sucesso!");
+            message.info("Rede excluída com sucesso!");
         } catch (Exception ex) {
             message.error("Erro ao deletar rede");
         }
