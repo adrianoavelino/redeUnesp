@@ -1,5 +1,6 @@
 package br.com.unesp.controller;
 
+import br.com.unesp.dao.HostDao;
 import br.com.unesp.dao.SubredeDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Rede;
@@ -15,9 +16,11 @@ public class DeleteSubredeController {
 
     @Inject
     private SubredeDao dao;
+    @Inject
+    private HostDao hostDao;
     private Rede rede;
     @Inject
-    private FacesMessages mesage;
+    private FacesMessages message;
 
     public Rede getRede() {
         return rede;
@@ -29,18 +32,33 @@ public class DeleteSubredeController {
 
     public void resetar() {
         if (rede != null) {
-            try {
-                List<Subrede> subredes = dao.buscarSubredesPorRede(rede);
-                for (Subrede sub : subredes) {
-                    dao.deletar(sub);
+            if (this.validar()) {
+                try {
+                    List<Subrede> subredes = dao.buscarSubredesPorRede(rede);
+                    for (Subrede sub : subredes) {
+                        dao.deletar(sub);
+                    }
+                    message.info("Subredes deletadas com sucesso!");
+                } catch (Exception ex) {
+                    message.error("Erro ao deletar Subredes");
+                    ex.printStackTrace();
                 }
-                mesage.info("Subredes deletadas com sucesso!");
-            } catch (Exception ex) {
-                mesage.error("Erro ao deletar Subredes");
-                ex.printStackTrace();
             }
         } else {
-            mesage.error("Selecione uma Rede");
+            message.error("Selecione uma Rede");
         }
+    }
+
+    public boolean validar() {
+        try {
+            if (hostDao.listarHostComIp(this.rede.getId()).size() > 0) {
+                message.error("Para resetar essa rede você deve remover todos os ips dos host da rede " + this.rede.getEndereco());
+                return false;
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao listar ips da subrede" + ex);
+        }
+        return true;
+
     }
 }

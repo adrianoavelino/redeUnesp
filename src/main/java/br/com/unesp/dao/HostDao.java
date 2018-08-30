@@ -64,6 +64,13 @@ public class HostDao {
         List<Object[]> hosts = query.getResultList();
         return hosts;
     }
+    
+    public List<Host> listarHostComIp(Integer idDaRede) {
+       Query query = this.em.createQuery("from host h where h.ip.enderecoIp != null and h.ip.rede.id = :rede");
+       query.setParameter("rede", idDaRede);
+       List<Host> hosts = query.getResultList();
+       return hosts;
+    }
 
     public void salvar(Host host) {
         this.em.persist(host);
