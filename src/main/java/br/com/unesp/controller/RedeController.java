@@ -6,6 +6,7 @@ import br.com.unesp.dao.SubredeDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Ip;
 import br.com.unesp.model.Rede;
+import br.com.unesp.model.TipoEndereco;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
@@ -54,6 +55,10 @@ public class RedeController {
         this.listaIp = listaIp;
     }
 
+    public TipoEndereco[] getTipoEndereco() {
+        return TipoEndereco.values();
+    }
+
     public void salvar() {
 
         if (rede.getId() == null) {
@@ -66,11 +71,13 @@ public class RedeController {
                 } catch (Exception ex) {
                     message.error("Erro ao salvar Rede");
                 }
-                for (Ip ip : ips) {
-                    try {
-                        ipDao.salvar(ip);
-                    } catch (Exception ex) {
-                        message.error("Erro ao salvar lista de ip");
+                if (rede.getTipoEndereco() == TipoEndereco.IPV4) {
+                    for (Ip ip : ips) {
+                        try {
+                            ipDao.salvar(ip);
+                        } catch (Exception ex) {
+                            message.error("Erro ao salvar lista de ip");
+                        }
                     }
                 }
             }

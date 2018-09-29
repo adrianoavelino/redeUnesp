@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="dados">
+        <h:form id="ipv6-cadastro">
+            <p:messages id="msg" />
+            <h:inputHidden value="#{ipv6Controller.ipv6.id}" />
+            <h:panelGrid columns="2">
+
+                <p:outputLabel value="Rede IPV6: " />
+                <h:selectOneMenu id="rede"
+                                 converter="redeConverter"
+                                 value="#{ipv6Controller.ipv6.rede}">
+                    <!--<f:selectItem itemLabel="Selecione uma rede" itemValue="" />-->
+                    <f:selectItems value="#{redeController.dao.listarRedesIpv6()}"
+                                   var="rede"
+                                   itemLabel="#{rede.endereco}"
+                                   itemValue="#{rede}" />
+                </h:selectOneMenu>                 
+                <p:outputLabel value="Vlan:" />
+                <h:selectOneMenu id="vlan"
+                                 converter="vlanConverter"
+                                 value="#{ipv6Controller.ipv6.vlan}">
+                    <!--<f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />-->
+                    <f:selectItems value="#{vlanController.vlanDao.listar()}"
+                                   var="vlan"   
+                                   itemLabel="#{vlan.numero} - #{vlan.descricao}"
+                                   itemValue="#{vlan}" />
+                </h:selectOneMenu>    
+                <p:outputLabel value="Endereço: " />
+                <p:inputText value="#{ipv6Controller.ipv6.endereco}" />
+
+                <h:outputLabel />
+                <p:commandButton value="Salvar" 
+                                 action="#{ipv6Controller.salvar()}" 
+                                 update="ipv6-cadastro :ipv6-tabela">
+                </p:commandButton>
+                <h:outputLabel />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="ipv6-tabela" style="width: 500px">
+            <p:dataTable value="#{ipv6Controller.ipv6Dao.listar()}" var="ipv6">
+                <p:column headerText="Id" style="width: 50px">
+                    <h:outputText value="#{ipv6.id}" />
+                </p:column>
+                <p:column headerText="Endereço" style="width: 150px">
+                    <h:outputText value="#{ipv6.rede.endereco}:#{ipv6.vlan.numero}:#{ipv6.endereco}" />
+                </p:column>
+                <p:column headerText="Vlan">
+                    <h:outputText value="#{ipv6.vlan.descricao}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" 
+                                     actionListener="#{ipv6Controller.deletar}"
+                                     update=":ipv6-cadastro :ipv6-tabela"
+                                     immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Ip?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":ipv6-cadastro" />
+                        <f:attribute name="ipv6Selecionado" value="#{ipv6}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" 
+                                     actionListener="#{ipv6Controller.editar}" 
+                                     update=":ipv6-cadastro" 
+                                     immediate="true">
+                        <p:resetInput target=":ipv6-cadastro" />
+                        <f:attribute name="ipv6Selecionado" value="#{ipv6}" />
+                    </p:commandButton>
+                </p:column>                
+            </p:dataTable>
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 update=":ipv6-cadastro"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 update=":ipv6-cadastro"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>              
+        </h:form>    
+    </ui:define>
+</ui:composition>
+

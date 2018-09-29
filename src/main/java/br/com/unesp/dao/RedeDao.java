@@ -1,6 +1,7 @@
 package br.com.unesp.dao;
 
 import br.com.unesp.model.Rede;
+import br.com.unesp.model.TipoEndereco;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,6 +29,13 @@ public class RedeDao {
 
     public List<Rede> listar() throws Exception {
         Query query = this.em.createQuery("from rede r");
+        List<Rede> redes = query.getResultList();
+        return redes;
+    }
+
+    public List<Rede> listarRedesIpv6() throws Exception {
+        Query query = this.em.createQuery("from rede r where r.tipoEndereco = :tipo");
+        query.setParameter("tipo", TipoEndereco.IPV6);
         List<Rede> redes = query.getResultList();
         return redes;
     }

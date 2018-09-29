@@ -16,11 +16,13 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 -Host
     - colocar mascara para mac-address?
     - validar mac-address
+    - adicionar ipv6
 
 - Rede
     - adicionar mascara
     - verificar ip válido
-    - corrigir bug ao deletar rede. Obs: o deletar prenche o campo endereço da rede
+    - otimizar performance devido a adição da classe TipoEndereco
+    - verificar formulpários que devem exibir somente os endereços IPV4
 
 - Vlan
     - validar campo número com converter - traduzir mensagem ou trocar por String
@@ -32,10 +34,12 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - organizar tabela
     - otimizar eager das tabelas
     - remover métodos com parâmetros (getgateway ...)
-    - verificar bug na range de ips
 
 - Usuario
     - colocar mascara na matrícula?
+
+- IPV6
+    - verificar performance e consultas extras do problema n+1
 
 - Geral
     - remover css inline (style)
@@ -44,3 +48,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - adicionar validação jsf
     - remover relacionamento bidirecional da classe IP
     - melhorar/criar interface de  validação (SOLID)
+    - adicionar teste E2E
+    - adicionar TDD
+    - adicionar teste de integração
