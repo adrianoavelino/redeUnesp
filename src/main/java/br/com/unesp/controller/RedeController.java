@@ -66,20 +66,21 @@ public class RedeController {
                 List<Ip> ips = Ip.criarListaEnderecoIp(rede);
                 try {
                     dao.salvar(rede);
+                    if (rede.getTipoEndereco() == TipoEndereco.IPV4) {
+                        for (Ip ip : ips) {
+                            try {
+                                ipDao.salvar(ip);
+                            } catch (Exception ex) {
+                                message.error("Erro ao salvar lista de ip");
+                            }
+                        }
+                    }
                     this.rede = new Rede();
                     message.info("Rede salva com sucesso!");
                 } catch (Exception ex) {
                     message.error("Erro ao salvar Rede");
                 }
-                if (rede.getTipoEndereco() == TipoEndereco.IPV4) {
-                    for (Ip ip : ips) {
-                        try {
-                            ipDao.salvar(ip);
-                        } catch (Exception ex) {
-                            message.error("Erro ao salvar lista de ip");
-                        }
-                    }
-                }
+
             }
         } else {
             if (this.validar()) {
