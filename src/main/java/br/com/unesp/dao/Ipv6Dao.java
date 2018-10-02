@@ -14,7 +14,7 @@ public class Ipv6Dao {
     private EntityManager em;
     
     public List<Ipv6> listar() {
-        Query query = this.em.createQuery("from ipv6 i");
+        Query query = this.em.createQuery("from ipv6 i join fetch i.vlan v join fetch v.grupoRede g join fetch i.rede r");
         return query.getResultList();
     }
     

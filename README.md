@@ -22,7 +22,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - adicionar mascara
     - verificar ip válido
     - otimizar performance devido a adição da classe TipoEndereco
-    - verificar formulpários que devem exibir somente os endereços IPV4
 
 - Vlan
     - validar campo número com converter - traduzir mensagem ou trocar por String
@@ -39,7 +38,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - colocar mascara na matrícula?
 
 - IPV6
-    - verificar performance e consultas extras do problema n+1
 
 - Geral
     - remover css inline (style)
