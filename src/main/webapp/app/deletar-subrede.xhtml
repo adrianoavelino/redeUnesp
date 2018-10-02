@@ -17,7 +17,7 @@
                                  converter="redeConverter"
                                  value="#{deleteSubredeController.rede}">
                     <f:selectItem itemLabel="Selecione uma rede" itemValue="" />
-                    <f:selectItems value="#{redeController.dao.listar()}"
+                    <f:selectItems value="#{redeController.dao.listarRedesIpv4()}"
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
                                    itemValue="#{rede}" />

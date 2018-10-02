@@ -40,6 +40,13 @@ public class RedeDao {
         return redes;
     }
 
+    public List<Rede> listarRedesIpv4() throws Exception {
+        Query query = this.em.createQuery("from rede r where r.tipoEndereco = :tipo");
+        query.setParameter("tipo", TipoEndereco.IPV4);
+        List<Rede> redes = query.getResultList();
+        return redes;
+    }
+
     public void atualizar(Rede rede) throws Exception {
         Rede redeModificada = em.find(Rede.class, rede.getId());
         redeModificada.setEndereco(rede.getEndereco());

@@ -27,7 +27,7 @@
         </h:form>        
     </ui:define>
     <ui:define name="dados">
-        <p:tabView value="#{redeController.dao.listar()}" var="rede">
+        <p:tabView value="#{redeController.dao.listarRedesIpv4()}" var="rede">
             <p:tab title="#{rede.endereco}.0">
                 <p:dataTable value="#{ipController.ipDao.listar(rede.id)}" var="ip">
                     <p:column headerText="vlan">
