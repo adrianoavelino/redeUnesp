@@ -2,10 +2,12 @@ package br.com.unesp.controller;
 
 import br.com.unesp.dao.HostDao;
 import br.com.unesp.dao.IpDao;
+import br.com.unesp.dao.Ipv6Dao;
 import br.com.unesp.dao.VlanDao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Host;
 import br.com.unesp.model.Ip;
+import br.com.unesp.model.Ipv6;
 import br.com.unesp.model.TipoHost;
 import br.com.unesp.model.Usuario;
 import br.com.unesp.model.Vlan;
@@ -27,6 +29,8 @@ public class HostController implements Serializable {
     @Inject
     private IpDao ipDao;
     @Inject
+    private Ipv6Dao ipv6Dao;
+    @Inject
     private VlanDao vlanDao;
     @Inject
     private FacesMessages message;
@@ -35,10 +39,12 @@ public class HostController implements Serializable {
     private Vlan vlan;
     private Ip ip;
     private List<Ip> listaDeIps;
+    private List<Ipv6> listaDeIpv6s;
     private List<Vlan> vlans;
 
     public HostController() {
         listaDeIps = new ArrayList<>();
+        listaDeIpv6s = new ArrayList<>();
         vlans = new ArrayList<>();
     }
 
@@ -58,6 +64,14 @@ public class HostController implements Serializable {
         this.ipDao = ipDao;
     }
 
+    public Ipv6Dao getIpv6Dao() {
+        return ipv6Dao;
+    }
+
+    public void setIpv6Dao(Ipv6Dao ipv6Dao) {
+        this.ipv6Dao = ipv6Dao;
+    }
+    
     public Host getHost() {
         return host;
     }
@@ -103,6 +117,14 @@ public class HostController implements Serializable {
         this.listaDeIps = listaDeIps;
     }
 
+    public List<Ipv6> getListaDeIpv6s() {
+        return listaDeIpv6s;
+    }
+
+    public void setListaDeIpv6s(List<Ipv6> ipv6s) {
+        this.listaDeIpv6s = ipv6s;
+    }
+    
     public List<Vlan> getVlans() {
         return vlans;
     }
@@ -192,16 +214,30 @@ public class HostController implements Serializable {
             listaDeIps = ipDao.buscarIpsDaVlan(vlan.getId());
             listaDeIps.add(host.getIp());
         }
+
+        if (hostSelecionado[11] != null) {
+            BigInteger idDoIp = (BigInteger) hostSelecionado[9];
+            BigInteger idDoIpv6 = (BigInteger) hostSelecionado[11];
+            Ipv6 ipv6Local = new Ipv6();
+            ipv6Local.setId(idDoIpv6.longValue());
+            ipv6Local.setEndereco((String) hostSelecionado[10]);
+            host.setIpv6(ipv6Local);
+            vlan = vlanDao.buscarPorIp(idDoIp.longValue());
+            listaDeIpv6s = ipv6Dao.buscarIpv6PorVlan(vlan.getId());
+            listaDeIpv6s.add(host.getIpv6());
+        }
     }
 
     public void onSelectVlan() {
         if (vlan == null) {
             this.listaDeIps = null;
+            this.listaDeIpv6s = null;
             return;
         }
         try {
             int idDaVlan = vlan.getId();
             this.listaDeIps = ipDao.buscarIpsDaVlan(idDaVlan);
+            this.listaDeIpv6s = ipv6Dao.buscarIpv6PorVlan(idDaVlan);
         } catch (Exception ex) {
             message.error("Erro ao selecionar os ips da vlan " + vlan);
             ex.printStackTrace();
@@ -219,16 +255,30 @@ public class HostController implements Serializable {
             temErro = false;
         }
 
-        if (!this.validateIp()) {
-            message.error("Selecione um IP");
+        if (!this.validateIpv4()) {
+            message.error("Selecione um endereço IPV4");
+            temErro = false;
+        }
+
+        if (!this.validateIpv6()) {
+            message.error("Selecione um endereço IPV6");
             temErro = false;
         }
 
         return temErro;
     }
 
-    private boolean validateIp() {
+    private boolean validateIpv4() {
         if (vlan != null && host.getIp() == null) {
+            if (ip == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateIpv6() {
+        if (vlan != null && host.getIpv6() == null) {
             if (ip == null) {
                 return false;
             }

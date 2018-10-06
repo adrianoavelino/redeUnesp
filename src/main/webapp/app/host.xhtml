@@ -47,9 +47,9 @@
                                    var="vlan"
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
                                    itemValue="#{vlan}" />
-                    <p:ajax update="vlan ip" listener="#{hostController.onSelectVlan()}" />
+                    <p:ajax update="vlan ip ipv6" listener="#{hostController.onSelectVlan()}" />
                 </h:selectOneMenu>        
-                <h:outputLabel value="Ip:"/>
+                <h:outputLabel value="IPV4:"/>
                 <h:selectOneMenu id="ip"
                                  converter="ipConverter"
                                  value="#{hostController.host.ip}">
@@ -58,6 +58,16 @@
                                    var="ip"
                                    itemLabel="#{ip.rede.endereco}.#{ip.enderecoIp}"
                                    itemValue="#{ip}" />
+                </h:selectOneMenu>  
+                <h:outputLabel value="IPV6:"/>
+                <h:selectOneMenu id="ipv6"
+                                 converter="ipv6Converter"
+                                 value="#{hostController.host.ipv6}">
+                    <f:selectItem itemLabel="Selecione um IPV6" noSelectionOption="true" />
+                    <f:selectItems value="#{hostController.listaDeIpv6s}"
+                                   var="ipv6"
+                                   itemLabel="#{ipv6.rede.endereco}:#{ipv6.vlan.numero}:#{ipv6.endereco}"
+                                   itemValue="#{ipv6}" />
                 </h:selectOneMenu>  
 
                 <h:outputLabel />
@@ -69,8 +79,8 @@
             </h:panelGrid>
         </h:form>
         <h:form id="host-tabela">
-            <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 1000px">
-                <p:column headerText="Id">
+            <p:dataTable value="#{hostController.dao.listar()}" var="host" style="width: 1300px">
+                <p:column headerText="Id" style="width: 50px">
                     <h:outputText value="#{host[0]}" />
                 </p:column>
                 <p:column headerText="Nome">
@@ -90,6 +100,9 @@
                 </p:column>
                 <p:column headerText="Ip">
                     <h:outputText value="#{host[6]}" />
+                </p:column>
+                <p:column headerText="Ipv6">
+                    <h:outputText value="#{host[10]}" />
                 </p:column>
                <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 

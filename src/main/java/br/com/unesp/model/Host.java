@@ -32,6 +32,9 @@ public class Host implements Serializable {
     @OneToOne
     private Ip ip;
     
+    @OneToOne
+    private Ipv6 ipv6;
+    
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
@@ -93,6 +96,14 @@ public class Host implements Serializable {
         this.ip = ip;
     }
 
+    public Ipv6 getIpv6() {
+        return ipv6;
+    }
+
+    public void setIpv6(Ipv6 ipv6) {
+        this.ipv6 = ipv6;
+    }
+    
     public boolean isDiferente(Host host) {
         return this.id != host.getId();
     }    

@@ -16,7 +16,7 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 -Host
     - colocar mascara para mac-address?
     - validar mac-address
-    - adicionar ipv6
+    - verificar os if no método editar do controller
 
 - Rede
     - adicionar mascara
@@ -37,7 +37,13 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 - Usuario
     - colocar mascara na matrícula?
 
+- IP
+    - renomear para IPV4?
+
 - IPV6
+    - ordenar listas de ipv6
+    - exibir somente IPV6 não utilizados no cadastro de host
+    - verificar IPV6 não utilizados antes de deletar
 
 - Geral
     - remover css inline (style)
@@ -49,3 +55,4 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - adicionar teste E2E
     - adicionar TDD
     - adicionar teste de integração
+    - verificar o uso de interface para ip

@@ -18,6 +18,22 @@ public class Ipv6Dao {
         return query.getResultList();
     }
     
+    public List<Ipv6> buscarIpv6PorVlan(Integer vlan) {
+        String consulta = "select "
+                + " i "
+                + "from "
+                + "ipv6 i join fetch i.vlan v "
+                + "join fetch v.grupoRede g "
+                + "join fetch i.rede r "
+                + "where v.id = :idDaVlan";
+        Query query = this.em.createQuery(consulta);
+        query.setParameter("idDaVlan", vlan);
+        List<Ipv6> ips = query.getResultList();
+        return ips;
+    }
+    
+    
+    
     public void salvar(Ipv6 ipv6) throws Exception{
         this.em.persist(ipv6);
     }

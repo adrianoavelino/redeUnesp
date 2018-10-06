@@ -34,7 +34,9 @@ public class HostDao {
                 + "concat(rede.endereco, '.', ip.enderecoIp), "
                 + "tipo_host.id_tipo_host, "
                 + "usuario.id, "
-                + "ip.ip_id "
+                + "ip.ip_id, "
+                + "concat(redeIpv6.endereco, ':', vlan.numero, ':', ipv6.endereco), "
+                + "ipv6_id "
                 + "from "
                     + "host "
                 + "inner join "
@@ -56,8 +58,14 @@ public class HostDao {
                     + "vlan "
                         + "on subrede.vlan_id = vlan.id_vlan "
                 + "left join "
-                + "rede "
-                + "on rede.rede_id = ip.rede_id "
+                    + "rede "
+                        + "on rede.rede_id = ip.rede_id "
+                + "left join "
+                    + "ipv6 "
+                        + "on ipv6.id = host.ipv6_id "
+                + "left join "
+                    + "rede as redeIpv6 "
+                        + "on ipv6.rede_id = redeIpv6.rede_id "
                 + "order by "
                     + "host.id_host";
         Query query = this.em.createNativeQuery(sql);
@@ -83,6 +91,7 @@ public class HostDao {
         hostModificado.setMacAddress(host.getMacAddress());
         hostModificado.setTipo(host.getTipo());
         hostModificado.setIp(host.getIp());
+        hostModificado.setIpv6(host.getIpv6());
         em.merge(hostModificado);
     }
 
