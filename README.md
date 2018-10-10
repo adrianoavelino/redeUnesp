@@ -13,6 +13,9 @@ grep INSERT redeUnesp.sql #pega todos insert do arquivo
 select concat(r.endereco, ".", i.enderecoIp) as teste from ip i inner join rede r on r.rede_id = i.rede_id; //resolve problema de atualizar rede
 select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer join usuario u on h.id_usuario = u.id limit 10; //remover bidirecional de ip
 
+- TipoHost
+    - verificar TipoHost utilizado antes de deletar
+
 -Host
     - colocar mascara para mac-address?
     - validar mac-address
@@ -23,10 +26,14 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - verificar ip válido
     - otimizar performance devido a adição da classe TipoEndereco
 
+- GrupoRede
+    - verificar se grupo está associado à algum vlan antes de deletar
+
 - Vlan
     - validar campo número com converter - traduzir mensagem ou trocar por String
     - verificar a possibilidade somente numero
     - adicionar subrede no mesmo form?
+    - validar vlan utilizada antes de deletar
 
 - Subrede
     - ordenar opções do h:selectOneMenu de máscara de rede
@@ -36,6 +43,7 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 
 - Usuario
     - colocar mascara na matrícula?
+    - verificar se usuário está associado algum host antes de deletar
 
 - IP
     - renomear para IPV4?
@@ -56,3 +64,4 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - adicionar TDD
     - adicionar teste de integração
     - verificar o uso de interface para ip
+    - verificar exceptions dos daos

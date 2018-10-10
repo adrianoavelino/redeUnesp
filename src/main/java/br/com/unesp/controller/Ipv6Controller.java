@@ -1,5 +1,6 @@
 package br.com.unesp.controller;
 
+import br.com.unesp.dao.HostDao;
 import br.com.unesp.dao.Ipv6Dao;
 import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.Ipv6;
@@ -15,6 +16,8 @@ public class Ipv6Controller {
     private Ipv6 ipv6 = new Ipv6();
     @Inject
     private Ipv6Dao ipv6Dao;
+    @Inject
+    private HostDao hostDao;
     @Inject
     private FacesMessages message;
 
@@ -56,8 +59,13 @@ public class Ipv6Controller {
     public void deletar(ActionEvent evento) {
         ipv6 = (Ipv6) evento.getComponent().getAttributes().get("ipv6Selecionado");
         try {
+            if (ipv6Dao.isIpv6EmUso(ipv6)) {
+                message.error("O IPV6 está em uso. Remova o IPV6 do host antes de deletar");
+                return;
+            }
             ipv6Dao.deletar(ipv6);
             ipv6 = new Ipv6();
+            message.info("IPV6 deletado com sucesso!");
         } catch (Exception e) {
             System.out.println(e);
         }
