@@ -218,14 +218,14 @@ public class HostController implements Serializable {
         if (hostSelecionado[11] != null) {
             BigInteger idDoIp = (BigInteger) hostSelecionado[9];
             BigInteger idDoIpv6 = (BigInteger) hostSelecionado[11];
-            Ipv6 ipv6Local = new Ipv6();
-            ipv6Local.setId(idDoIpv6.longValue());
-            ipv6Local.setEndereco((String) hostSelecionado[10]);
+            Ipv6 ipv6Local = ipv6Dao.buscarIpv6PorId(idDoIpv6.longValue());
             host.setIpv6(ipv6Local);
             vlan = vlanDao.buscarPorIp(idDoIp.longValue());
             listaDeIpv6s = ipv6Dao.buscarIpv6PorVlan(vlan.getId());
             listaDeIpv6s.add(host.getIpv6());
-        }
+            return;
+        } 
+        host.setIpv6(null);
     }
 
     public void onSelectVlan() {

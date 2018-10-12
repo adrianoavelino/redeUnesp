@@ -50,8 +50,9 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 
 - IPV6
     - ordenar listas de ipv6
-    - exibir somente IPV6 não utilizados no cadastro de host
-    - verificar IPV6 não utilizados antes de deletar
+
+- Home
+    - aumentar tamanho da coluna do ipv6
 
 - Geral
     - remover css inline (style)

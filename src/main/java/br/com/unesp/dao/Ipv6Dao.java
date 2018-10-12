@@ -27,11 +27,25 @@ public class Ipv6Dao {
                 + "ipv6 i join fetch i.vlan v "
                 + "join fetch v.grupoRede g "
                 + "join fetch i.rede r "
-                + "where v.id = :idDaVlan";
+                + "where v.id = :idDaVlan "
+                + "and i.id not in :idsDosIpv6sEmUso ";
         Query query = this.em.createQuery(consulta);
+        List<String> idsDosIpv6sEmUso = this.buscarIpv6sHosts();
         query.setParameter("idDaVlan", vlan);
+        query.setParameter("idsDosIpv6sEmUso", idsDosIpv6sEmUso);
         List<Ipv6> ips = query.getResultList();
         return ips;
+    }
+    
+    public Ipv6 buscarIpv6PorId(Long idDoIpv6) {
+        String consulta = "from ipv6 i join fetch i.vlan v join fetch i.rede r join fetch v.grupoRede g where i.id = :idDoIpv6 ";
+        Query query = this.em.createQuery(consulta);
+        query.setParameter("idDoIpv6", idDoIpv6);
+        List<Ipv6> ipv6s = query.getResultList();
+        if(!ipv6s.isEmpty()){
+            return ipv6s.get(0);
+        }
+        return null;
     }
 
     public void salvar(Ipv6 ipv6) throws Exception {
@@ -67,7 +81,7 @@ public class Ipv6Dao {
         if (this.buscarIpv6sHosts().isEmpty()) {
             return false;
         }
-        List<Long> hostsComIpv6 = this.buscarIpv6sHosts();
+        List<String> hostsComIpv6 = this.buscarIpv6sHosts();
         String consulta = "from ipv6 i join fetch i.vlan v join fetch v.grupoRede g join fetch i.rede r where i.id = :idDoIpv6 and i.id in :listaDeHost ";
         int quantidadeDeHostsComIpv6 = 0;
         try {
@@ -84,10 +98,10 @@ public class Ipv6Dao {
         return true;
     }
 
-    private List<Long> buscarIpv6sHosts() {
+    private List<String> buscarIpv6sHosts() {
         String consulta = "select h.ipv6.id from host h where h.ipv6.id != null";
         Query query = this.em.createQuery(consulta);
-        List<Long> lista;
+        List<String> lista;
         try {
             lista = query.getResultList();
         } catch (Exception e) {
