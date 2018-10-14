@@ -60,6 +60,17 @@ public class IpDao {
         List<Object[]> ips = query.getResultList();
         return ips;
     }
+    
+    public Ip buscarIpPorId(Long idDoIp) {
+        String consulta = "from ip i left join fetch i.host h left join fetch i.rede r where i.id = :idDoIp ";
+        Query query = this.em.createQuery(consulta);
+        query.setParameter("idDoIp", idDoIp);
+        List<Ip> ips = query.getResultList();
+        if(!ips.isEmpty()){
+            return ips.get(0);
+        }
+        return null;
+    }    
 
     public void salvar(Ip ip) throws Exception {
         em.persist(ip);

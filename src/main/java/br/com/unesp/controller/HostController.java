@@ -206,13 +206,12 @@ public class HostController implements Serializable {
 
         if (hostSelecionado[9] != null) {
             BigInteger idDoIp = (BigInteger) hostSelecionado[9];
-            Ip ipLocal = new Ip();
-            ipLocal.setId(idDoIp.longValue());
-            ipLocal.setEnderecoIp((String) hostSelecionado[6]);
+            Ip ipLocal = ipDao.buscarIpPorId(idDoIp.longValue());
             host.setIp(ipLocal);
             vlan = vlanDao.buscarPorIp(ipLocal.getId());
             listaDeIps = ipDao.buscarIpsDaVlan(vlan.getId());
             listaDeIps.add(host.getIp());
+            return;
         }
 
         if (hostSelecionado[11] != null) {
@@ -226,6 +225,8 @@ public class HostController implements Serializable {
             return;
         } 
         host.setIpv6(null);
+        host.setIp(null);
+        this.vlan = null;
     }
 
     public void onSelectVlan() {
@@ -285,5 +286,5 @@ public class HostController implements Serializable {
         }
         return true;
     }
-
+    
 }
