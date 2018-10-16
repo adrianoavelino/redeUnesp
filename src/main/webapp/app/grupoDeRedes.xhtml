@@ -18,7 +18,7 @@
         </h:form>
         <h:form id="grupoRede-tabela">
             <p:dataTable 
-                         value="#{grupoRedeController.dao.listar()}" var="grupo" style="width: 500px">
+                         value="#{grupoRedeController.grupoRedeDao.listar()}" var="grupo" style="width: 500px">
                 <p:column headerText="Id">
                     <h:outputText value="#{grupo.id}" />
                 </p:column>

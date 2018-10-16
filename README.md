@@ -27,7 +27,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - otimizar performance devido a adição da classe TipoEndereco
 
 - GrupoRede
-    - verificar se grupo está associado à algum vlan antes de deletar
 
 - Vlan
     - validar campo número com converter - traduzir mensagem ou trocar por String

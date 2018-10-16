@@ -5,8 +5,6 @@ import br.com.unesp.jsf.message.FacesMessages;
 import br.com.unesp.model.GrupoRede;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -16,7 +14,7 @@ import javax.inject.Named;
 public class GrupoRedeController {
 
     @Inject
-    private GrupoRedeDao dao;
+    private GrupoRedeDao grupoRedeDao;
     private GrupoRede grupoRede = new GrupoRede();
     private List<GrupoRede> gruposDeRedes;
 
@@ -34,12 +32,12 @@ public class GrupoRedeController {
         this.grupoRede = grupoRede;
     }
 
-    public GrupoRedeDao getDao() {
-        return dao;
+    public GrupoRedeDao getGrupoRedeDao() {
+        return grupoRedeDao;
     }
 
-    public void setDao(GrupoRedeDao dao) {
-        this.dao = dao;
+    public void setGrupoRedeDao(GrupoRedeDao grupoRedeDao) {
+        this.grupoRedeDao = grupoRedeDao;
     }
 
     public List<GrupoRede> getGruposDeRedes() {
@@ -59,10 +57,10 @@ public class GrupoRedeController {
     }
 
     private void cadastrar() {
-        if (dao.isNomeDuplicado(grupoRede)) {
+        if (grupoRedeDao.isNomeDuplicado(grupoRede)) {
             message.error("O Grupo de Rede  " + grupoRede.getNome() + " já está cadastrado");
         } else {
-            dao.salvar(this.grupoRede);
+            grupoRedeDao.salvar(this.grupoRede);
             System.out.println("Salvando grupo de rede ..." + this.grupoRede);
             grupoRede = new GrupoRede();
             message.info("Salvo com sucesso!");
@@ -71,10 +69,10 @@ public class GrupoRedeController {
 
     private void alterar() {
         try {
-            if (dao.isNomeDuplicado(grupoRede)) {
+            if (grupoRedeDao.isNomeDuplicado(grupoRede)) {
                 message.error("O Grupo de Rede  " + grupoRede.getNome() + " já está cadastrado");
             } else {
-                dao.atualizar(grupoRede);
+                grupoRedeDao.atualizar(grupoRede);
                 grupoRede = new GrupoRede();
                 System.out.println("Atualiza grupo");
             }
@@ -86,7 +84,12 @@ public class GrupoRedeController {
     public void deletar(ActionEvent evento) {
         grupoRede = (GrupoRede) evento.getComponent().getAttributes().get("grupoRedeSelecionado");
         try {
-            dao.deletar(grupoRede);
+            if (grupoRedeDao.isGrupoRedeEmUso(grupoRede.getId())) {
+                message.error("Grupo de rede em uso. Remova o grupo de rede \"" + grupoRede.getNome() + "\" de todas as vlans.");
+                grupoRede = new GrupoRede();
+                return;
+            }
+            grupoRedeDao.deletar(grupoRede);
             grupoRede = new GrupoRede();
         } catch (Exception e) {
             System.out.println(e);
@@ -99,7 +102,7 @@ public class GrupoRedeController {
 
     public void listar() {
         try {
-            gruposDeRedes = dao.listar();
+            gruposDeRedes = grupoRedeDao.listar();
             for (GrupoRede grupoRede1 : gruposDeRedes) {
                 System.out.println(grupoRede1.getNome());
             }

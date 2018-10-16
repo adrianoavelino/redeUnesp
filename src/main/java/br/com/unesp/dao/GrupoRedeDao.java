@@ -53,5 +53,16 @@ public class GrupoRedeDao {
         }
         return false;
     }
+    
+    public boolean isGrupoRedeEmUso(Integer idDoGrupoDeRede) {
+        String consulta = "select v from vlan v join fetch v.grupoRede g where g.id = :idDoGrupoDeRede ";
+        Query query = this.em.createQuery(consulta);
+        query.setParameter("idDoGrupoDeRede", idDoGrupoDeRede);
+        List<GrupoRede> grupoDeRedes = query.getResultList();
+        if (grupoDeRedes.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 
 }

@@ -22,7 +22,7 @@
                                  converter="grupoRedeConverter"
                                  value="#{vlanController.vlan.grupoRede}">
                     <f:selectItem itemLabel="Selecione um Grupo de Rede" />
-                    <f:selectItems value="#{grupoRedeController.dao.listar()}"
+                    <f:selectItems value="#{grupoRedeController.grupoRedeDao.listar()}"
                                    var="grupo"
                                    itemLabel="#{grupo.nome}"
                                    itemValue="#{grupo}" />
