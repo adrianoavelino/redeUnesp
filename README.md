@@ -52,7 +52,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - ordenar listas de ipv6
 
 - Home
-    - aumentar tamanho da coluna do ipv6
 
 - Geral
     - remover css inline (style)
