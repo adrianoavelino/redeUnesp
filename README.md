@@ -32,7 +32,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
     - validar campo número com converter - traduzir mensagem ou trocar por String
     - verificar a possibilidade somente numero
     - adicionar subrede no mesmo form?
-    - validar vlan utilizada antes de deletar
 
 - Subrede
     - ordenar opções do h:selectOneMenu de máscara de rede

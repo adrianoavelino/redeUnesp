@@ -71,8 +71,13 @@ public class VlanController {
     public void deletar(ActionEvent evento) {
         vlan = (Vlan) evento.getComponent().getAttributes().get("vlanSelecionada");
         try {
+            if (this.vlanDao.isVlanEmUso(vlan.getId())) {
+                message.error("Vlan em uso. Remova a vlan \"" + vlan.getDescricao() + "\" das subredes e dos IPV6s");
+                vlan = new Vlan();
+                return;
+            }
             vlanDao.deletar(vlan);
-            message.info("Deletada com sucesso!");
+            message.info("Vlan deletada com sucesso!");
         } catch (Exception ex) {
             message.error("Erro ao deletar vlan");
         }
