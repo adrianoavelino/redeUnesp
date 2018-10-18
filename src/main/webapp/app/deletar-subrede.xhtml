@@ -13,7 +13,7 @@
             <h:inputHidden value="#{subredeController.subrede.id}" />
             <h:panelGrid columns="4">
                 <p:outputLabel value="Rede:" />
-                <h:selectOneMenu id="rede"
+                <p:selectOneMenu id="rede"
                                  converter="redeConverter"
                                  value="#{deleteSubredeController.rede}">
                     <f:selectItem itemLabel="Selecione uma rede" itemValue="" />
@@ -21,7 +21,7 @@
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
                                    itemValue="#{rede}" />
-                </h:selectOneMenu>    
+                </p:selectOneMenu>    
 
                 <h:outputLabel />
                 <p:commandButton value="Deletar subredes desta Rede" 

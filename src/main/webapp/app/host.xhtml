@@ -28,7 +28,7 @@
                                    itemValue="#{tipo}" />
                 </p:selectOneMenu>
                 <p:outputLabel value="Usuário:" />
-                <h:selectOneMenu id="usuario"
+                <p:selectOneMenu id="usuario"
                                  style="width: 200px;"
                                  converter="usuarioConverter"
                                  value="#{hostController.host.usuario}">
@@ -37,9 +37,9 @@
                                    var="usuario"
                                    itemLabel="#{usuario.nome}"
                                    itemValue="#{usuario}" />
-                </h:selectOneMenu>
+                </p:selectOneMenu>
                 <h:outputLabel value="Vlan:" />
-                <h:selectOneMenu id="vlan"
+                <p:selectOneMenu id="vlan"
                                  converter="vlanConverter"
                                  value="#{hostController.vlan}">
                     <f:selectItem itemLabel="Selecione uma Vlan"   />
@@ -48,9 +48,9 @@
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
                                    itemValue="#{vlan}" />
                     <p:ajax update="vlan ip ipv6" listener="#{hostController.onSelectVlan()}" />
-                </h:selectOneMenu>        
+                </p:selectOneMenu>        
                 <h:outputLabel value="IPV4:"/>
-                <h:selectOneMenu id="ip"
+                <p:selectOneMenu id="ip"
                                  converter="ipConverter"
                                  value="#{hostController.host.ip}">
                     <f:selectItem itemLabel="Selecione um IP" noSelectionOption="true" />
@@ -58,9 +58,9 @@
                                    var="ip"
                                    itemLabel="#{ip.rede.endereco}.#{ip.enderecoIp}"
                                    itemValue="#{ip}" />
-                </h:selectOneMenu>  
+                </p:selectOneMenu>  
                 <h:outputLabel value="IPV6:"/>
-                <h:selectOneMenu id="ipv6"
+                <p:selectOneMenu id="ipv6"
                                  converter="ipv6Converter"
                                  value="#{hostController.host.ipv6}">
                     <f:selectItem itemLabel="Selecione um IPV6" noSelectionOption="true" />
@@ -68,7 +68,7 @@
                                    var="ipv6"
                                    itemLabel="#{ipv6.rede.endereco}:#{ipv6.vlan.numero}:#{ipv6.endereco}"
                                    itemValue="#{ipv6}" />
-                </h:selectOneMenu>  
+                </p:selectOneMenu>  
 
                 <h:outputLabel />
                 <p:commandButton 

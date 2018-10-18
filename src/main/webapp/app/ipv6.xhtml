@@ -13,7 +13,7 @@
             <h:panelGrid columns="2">
 
                 <p:outputLabel value="Rede IPV6: " />
-                <h:selectOneMenu id="rede"
+                <p:selectOneMenu id="rede"
                                  converter="redeConverter"
                                  value="#{ipv6Controller.ipv6.rede}">
                     <!--<f:selectItem itemLabel="Selecione uma rede" itemValue="" />-->
@@ -21,9 +21,9 @@
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
                                    itemValue="#{rede}" />
-                </h:selectOneMenu>                 
+                </p:selectOneMenu>                 
                 <p:outputLabel value="Vlan:" />
-                <h:selectOneMenu id="vlan"
+                <p:selectOneMenu id="vlan"
                                  converter="vlanConverter"
                                  value="#{ipv6Controller.ipv6.vlan}">
                     <!--<f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />-->
@@ -31,7 +31,7 @@
                                    var="vlan"   
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
                                    itemValue="#{vlan}" />
-                </h:selectOneMenu>    
+                </p:selectOneMenu>    
                 <p:outputLabel value="Endereço: " />
                 <p:inputText value="#{ipv6Controller.ipv6.endereco}" />
 

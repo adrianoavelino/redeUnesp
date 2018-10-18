@@ -13,7 +13,7 @@
             <h:panelGrid columns="2">
 
                 <p:outputLabel value="Rede:" />
-                <h:selectOneMenu id="rede"
+                <p:selectOneMenu id="rede"
                                  converter="redeConverter"
                                  value="#{subredeController.subrede.rede}">
                     <!--<f:selectItem itemLabel="Selecione uma rede" itemValue="" />-->
@@ -21,10 +21,10 @@
                                    var="rede"
                                    itemLabel="#{rede.endereco}"
                                    itemValue="#{rede}" />
-                </h:selectOneMenu>    
+                </p:selectOneMenu>    
 
                 <p:outputLabel value="Vlan:" />
-                <h:selectOneMenu id="vlan"
+                <p:selectOneMenu id="vlan"
                                  converter="vlanConverter"
                                  value="#{subredeController.subrede.vlan}">
                     <!--<f:selectItem itemLabel="Selecione uma Vlan" itemValue="" />-->
@@ -32,17 +32,17 @@
                                    var="vlan"
                                    itemLabel="#{vlan.numero} - #{vlan.descricao}"
                                    itemValue="#{vlan}" />
-                </h:selectOneMenu>    
+                </p:selectOneMenu>    
 
                 <p:outputLabel value="Máscara de rede:" />
-                <h:selectOneMenu id="qtdHosts"
+                <p:selectOneMenu id="qtdHosts"
                                  value="#{subredeController.subrede.netmask}">
                     <!--<f:selectItem itemLabel="Selecione uma Máscara de Rede" itemValue="" />-->
                     <f:selectItems value="#{subredeController.marcarasDeRede}"
                                    var="qtd"
                                    itemLabel="#{mascara}"
                                    itemValue="#{mascara}" />
-                </h:selectOneMenu>  
+                </p:selectOneMenu>  
                 <h:outputLabel />
                 <p:commandButton value="Salvar" 
                                  action="#{subredeController.salvar()}" 
