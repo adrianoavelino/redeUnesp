@@ -70,4 +70,14 @@ public class UsuarioDao {
         return false;
     }
 
+    public boolean isUsuarioComHost(Integer idDoUsuario) {
+        String consultaUsuarioComHost = "select h.usuario.id from host h where h.usuario.id = :idDoUsuario ";
+        Query query = this.em.createQuery(consultaUsuarioComHost);
+        query.setParameter("idDoUsuario", idDoUsuario);
+        List<Integer> usuariosComHost = query.getResultList();
+        if (usuariosComHost.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

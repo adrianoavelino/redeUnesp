@@ -41,7 +41,6 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 
 - Usuario
     - colocar mascara na matrícula?
-    - verificar se usuário está associado algum host antes de deletar
 
 - IP
     - renomear para IPV4?
