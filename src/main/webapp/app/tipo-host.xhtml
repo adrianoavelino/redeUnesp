@@ -23,7 +23,7 @@
             </h:panelGrid>
         </h:form>
         <h:form id="tipoHost-tabela">
-            <p:dataTable value="#{tipoHostController.dao.listar()}" var="tipo" style="width: 500px">
+            <p:dataTable value="#{tipoHostController.tipoHostDao.listar()}" var="tipo" style="width: 500px">
                 <p:column headerText="Id">
                     <h:outputText value="#{tipo.id}" />
                 </p:column>
@@ -33,19 +33,19 @@
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-trash" 
                                      actionListener="#{tipoHostController.deletar}"
-                                     update=":tipoHost-tabela"
+                                     update=":tipoHost-cadastro :tipoHost-tabela"
                                      immediate="true">
                         <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Tipo de Host?"
                                    icon="ui-icon-alert" />
                         <p:resetInput target=":tipoHost-cadastro" />
-                        <f:attribute name="tipoHostSelecoinado" value="#{tipo}" />
+                        <f:attribute name="tipoHostSelecionado" value="#{tipo}" />
                     </p:commandButton>
                     <p:commandButton icon="ui-icon-pencil" 
                                      actionListener="#{tipoHostController.editar}" 
                                      update=":tipoHost-cadastro" 
                                      immediate="true">
                         <p:resetInput target=":tipoHost-cadastro" />
-                        <f:attribute name="tipoHostSelecoinado" value="#{tipo}" />
+                        <f:attribute name="tipoHostSelecionado" value="#{tipo}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>

@@ -14,18 +14,18 @@ import javax.inject.Named;
 public class TipoHostController {
     
     @Inject
-    private TipoHostDao dao;
+    private TipoHostDao tipoHostDao;
     private TipoHost tipoHost = new TipoHost();
     @Inject
     private FacesMessages message;
     private List<TipoHost> tiposHosts;
     
-    public TipoHostDao getDao() {
-        return dao;
+    public TipoHostDao getTipoHostDao() {
+        return tipoHostDao;
     }
     
-    public void setDao(TipoHostDao dao) {
-        this.dao = dao;
+    public void setTipoHostDao(TipoHostDao tipoHostDao) {
+        this.tipoHostDao = tipoHostDao;
     }
     
     public TipoHost getTipoHost() {
@@ -49,12 +49,12 @@ public class TipoHostController {
     
     public void salvar() {
         if (tipoHost.getId() == null) {
-            dao.salvar(this.tipoHost);
+            tipoHostDao.salvar(this.tipoHost);
             tipoHost = new TipoHost();
             message.info("Cadastrado com sucesso!");
         } else {
             try {
-                dao.atualizar(tipoHost);
+                tipoHostDao.atualizar(tipoHost);
                 tipoHost = new TipoHost();
                 message.info("Alterado com sucesso!");
             } catch (Exception ex) {
@@ -64,14 +64,20 @@ public class TipoHostController {
     }
     
     public void editar(ActionEvent evento) {
-        tipoHost = (TipoHost) evento.getComponent().getAttributes().get("tipoHostSelecoinado");
+        tipoHost = (TipoHost) evento.getComponent().getAttributes().get("tipoHostSelecionado");
     }
     
     public void deletar(ActionEvent evento) {
-        tipoHost = (TipoHost) evento.getComponent().getAttributes().get("tipoHostSelecoinado");
+        tipoHost = (TipoHost) evento.getComponent().getAttributes().get("tipoHostSelecionado");
         try {
-            dao.deletar(tipoHost);
-            message.info("Deletado com sucesso");
+            if (this.tipoHostDao.isTipoHostEmUso(tipoHost.getId())) {
+                message.error("Tipo de Host em uso. Remova o tipo de Host \"" + tipoHost.getTipo() + "\" utilizado nos hosts");
+                tipoHost = new TipoHost();
+                return;
+            }
+            tipoHostDao.deletar(tipoHost);
+            tipoHost = new TipoHost();
+            message.info("Tipo de Host deletado com sucesso");
         } catch (Exception ex) {
             message.error("Erro ao deletar tipo do host");
         }

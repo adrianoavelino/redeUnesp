@@ -22,7 +22,7 @@
                                  converter="tipoHostConverter"
                                  value="#{hostController.host.tipo}">
                     <f:selectItem itemLabel="Selecione um tipo" />
-                    <f:selectItems value="#{tipoHostController.dao.listar()}"
+                    <f:selectItems value="#{tipoHostController.tipoHostDao.listar()}"
                                    var="tipo"
                                    itemLabel="#{tipo.tipo}"
                                    itemValue="#{tipo}" />

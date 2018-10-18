@@ -1,6 +1,5 @@
 package br.com.unesp.dao;
 
-import br.com.unesp.model.GrupoRede;
 import br.com.unesp.model.TipoHost;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -69,5 +68,16 @@ public class TipoHostDao {
             return true;
         }
         return false;
-    }    
+    }
+
+    public boolean isTipoHostEmUso(Integer idDoTipoHost) {
+        String consultaTipoHostEmUso = "select h.tipo.id from host h where h.tipo.id = :idDoTipoHost ";
+        Query query = this.em.createQuery(consultaTipoHostEmUso);
+        query.setParameter("idDoTipoHost", idDoTipoHost);
+        List<Integer> tiposDeHostsEmUso = query.getResultList();
+        if (tiposDeHostsEmUso.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }
