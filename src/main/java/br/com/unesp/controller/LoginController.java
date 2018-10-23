@@ -2,17 +2,27 @@ package br.com.unesp.controller;
 
 import br.com.unesp.dao.LoginDao;
 import br.com.unesp.model.Login;
+import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 @Named(value = "loginController")
-@RequestScoped
-public class LoginController {
+@SessionScoped
+public class LoginController implements Serializable {
     @EJB
     private LoginDao meuDao;
+    private Login login = new Login();
 
     public LoginController() {
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
     
     public void salvar() {
@@ -22,6 +32,10 @@ public class LoginController {
         login1.setSenha("123");
         meuDao.create(login1);
         System.out.println("salvando ...");
+    }
+    
+    public String autenticar() {
+        return "app/index?faces-redirect=true";
     }
     
 }

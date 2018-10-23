@@ -1,20 +1,39 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Teste de persistencia</title>
+        <title>Login</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:commandButton value="salvar" action="#{loginController.salvar()}" />
-            <h:commandButton value="salvar tipo host" action="#{tipoHostController.salvar()}" />
-            <h:commandButton value="salvar host" action="#{hostController.salvar()}" />
-            <h:commandButton value="salvar rede" action="#{redeController.salvar()}" />
-            <h:commandButton value="salvar Grupo de rede" action="#{grupoRedeController.salvar()}" />
-            <h:commandButton value="salvar vlan" action="#{vlanController.salvar()}" />
-            <h:commandButton value="salvar subrede /listar ips" action="#{subredeController.salvar()}" />
-        </h:form>
+        <p:dialog header="Autenticação"
+                  closable="false"
+                  draggable="false"
+                  resizable="false"
+                  modal="true"
+                  visible="true" >
+            <h:form id="login-cadastro">
+                <h:panelGrid columns="2">
+                    <p:outputLabel />
+                    <p:messages />
+                    <p:outputLabel for="email" value="E-mail"/>
+                    <p:inputText id="email"
+                                 value="#{loginController.login.email}"
+                                 required="true" 
+                                 requiredMessage="Preencha o campo login" />
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:password id="senha"
+                                 value="#{loginController.login.senha}"
+                                 required="true" 
+                                 requiredMessage="Preencha o campo senha" />
+                    <p:outputLabel value=""/>
+                    <p:commandButton value="Autenticar"
+                                     action="#{loginController.autenticar()}"
+                                     update="login-cadastro" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 
