@@ -19,17 +19,17 @@
                     <p:messages />
                     <p:outputLabel for="email" value="E-mail"/>
                     <p:inputText id="email"
-                                 value="#{loginController.login.email}"
+                                 value="#{autenticarController.login.email}"
                                  required="true" 
                                  requiredMessage="Preencha o campo login" />
                     <p:outputLabel for="senha" value="Senha:"/>
                     <p:password id="senha"
-                                 value="#{loginController.login.senha}"
+                                 value="#{autenticarController.login.senha}"
                                  required="true" 
                                  requiredMessage="Preencha o campo senha" />
                     <p:outputLabel value=""/>
                     <p:commandButton value="Autenticar"
-                                     action="#{loginController.autenticar()}"
+                                     action="#{autenticarController.autenticar()}"
                                      update="login-cadastro" />
                 </h:panelGrid>
             </h:form>

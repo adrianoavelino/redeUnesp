@@ -4,11 +4,11 @@ import br.com.unesp.dao.LoginDao;
 import br.com.unesp.model.Login;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 @Named(value = "loginController")
-@SessionScoped
+@RequestScoped
 public class LoginController implements Serializable {
     @EJB
     private LoginDao meuDao;
