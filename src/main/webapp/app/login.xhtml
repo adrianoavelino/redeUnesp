@@ -7,7 +7,23 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-login
+        <h:form>
+            <h:panelGrid columns="2">
+                <p:outputLabel id="id" />
+                <p:messages id="msg" />
+                <p:outputLabel for="nome" value="Nome:" />
+                <p:inputText id="nome" value="#{loginController.login.nome}" />
+                <p:outputLabel for="email" value="E-mail" />
+                <p:inputText id="email" value="#{loginController.login.email}" />
+                <p:outputLabel for="senha" value="Senha:" />
+                <p:password id="senha" value="#{loginController.login.senha}" />
+                <p:outputLabel for="confirmarSenha" value="Confirmar a Senha:" />
+                <p:password id="confirmarSenha" value="" />
+                <p:outputLabel />
+                <p:commandButton  
+                    value="Salvar" />
+            </h:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>
 
