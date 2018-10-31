@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity(name = "login")
@@ -13,7 +14,9 @@ public class Login implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank(message = "Preencha o campo nome")
     private String nome;
+    @NotBlank(message = "Preencha o campo e-mail")
     private String email;
     private String senha;
 

@@ -49,6 +49,10 @@ select * from ip i left outer join host h on  h.ip_ip_id = i.ip_id left outer jo
 
 - Home
 
+- Login
+    - validar e-mail válido
+    - validar e-mail duplicado
+
 - Geral
     - remover css inline (style)
     - corrigir Doctype para html5

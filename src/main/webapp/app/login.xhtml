@@ -7,9 +7,9 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="dados">
-        <h:form>
+        <h:form id="login-cadastro">
             <h:panelGrid columns="2">
-                <p:outputLabel id="id" />
+                <h:inputHidden value="#{loginController.login.id}" />
                 <p:messages id="msg" />
                 <p:outputLabel for="nome" value="Nome:" />
                 <p:inputText id="nome" value="#{loginController.login.nome}" />
@@ -18,12 +18,56 @@
                 <p:outputLabel for="senha" value="Senha:" />
                 <p:password id="senha" value="#{loginController.login.senha}" />
                 <p:outputLabel for="confirmarSenha" value="Confirmar a Senha:" />
-                <p:password id="confirmarSenha" value="" />
+                <p:password id="confirmarSenha" value="#{loginController.confirmarSenha}" />
                 <p:outputLabel />
-                <p:commandButton  
+                <p:commandButton
+                    update="login-cadastro :login-tabela"
+                    actionListener="#{loginController.salvar()}"
                     value="Salvar" />
             </h:panelGrid>
         </h:form>
+        <h:form id="login-tabela">
+            <p:dataTable 
+                value="#{loginController.loginDao.listar()}" var="login" style="width: 800px">
+                <p:column headerText="Id">
+                    <h:outputText value="#{login.id}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{login.nome}" />
+                </p:column>
+                <p:column headerText="E-mail">
+                    <h:outputText value="#{login.email}" />
+                </p:column>
+                <p:column headerText="E-mail">
+                    <h:outputText value="#{login.senha}" />
+                </p:column>
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-trash" 
+                                     actionListener="#{loginController.deletar}" 
+                                     update=":login-cadastro :login-tabela" 
+                                     immediate="true">
+                        <p:confirm header="Confirmação" message="Tem certeza que quer excluir o Login?"
+                                   icon="ui-icon-alert" />
+                        <p:resetInput target=":login-cadastro" />
+                        <f:attribute name="loginSelecionado" value="#{login}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-pencil" 
+                                     actionListener="#{loginController.editar}" 
+                                     update=":login-cadastro :login-tabela" 
+                                     immediate="true" >
+                        <p:resetInput target=":login-cadastro" />
+                        <f:attribute name="loginSelecionado" value="#{login}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Não" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            </p:confirmDialog>            
+            </h:form>        
     </ui:define>
 </ui:composition>
 
